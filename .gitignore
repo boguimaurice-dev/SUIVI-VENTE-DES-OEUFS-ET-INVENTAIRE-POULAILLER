@@ -1,0 +1,8 @@
+# Local environment and caches
+.cache/
+.local/
+__pycache__/
+*.pyc
+
+# Heavy raw images (optional, comment out if you want to push photos)
+uploads/IMG*.jpg

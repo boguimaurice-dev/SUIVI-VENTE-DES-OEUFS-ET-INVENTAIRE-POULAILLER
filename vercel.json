@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/poulailler", "dest": "/Poulailler-Ste-Marie.html" },
+    { "src": "/sw.js", "headers": { "cache-control": "public, max-age=0, must-revalidate", "Service-Worker-Allowed": "/" }, "dest": "/sw.js" },
+    { "src": "/manifest.json", "headers": { "cache-control": "public, max-age=3600" }, "dest": "/manifest.json" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

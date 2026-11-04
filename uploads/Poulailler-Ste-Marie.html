@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poulailler Ste Marie — Inventaire &amp; œufs</title>
+  <style>
+:root {
+  --ink: #1c1710;
+  --ink-soft: #5a4e3e;
+  --parchment: #efe4d0;
+  --paper: #fffaf1;
+  --paper-2: #f7efe1;
+  --green: #234036;
+  --green-mid: #2f5a4a;
+  --green-deep: #152922;
+  --leaf: #3d7a5f;
+  --gold: #b47b1e;
+  --gold-soft: #e8c98a;
+  --terra: #a33b28;
+  --terra-soft: #f3d4cc;
+  --sage: #8aa894;
+  --line: #e2d3ba;
+  --line-strong: #cbb896;
+  --ok: #2a7a4e;
+  --warn: #b56a12;
+  --shadow: 0 18px 40px rgba(28, 23, 16, 0.12);
+  --radius: 18px;
+  --sidebar: 268px;
+  --font: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+  --ui: "Segoe UI", "Avenir Next", Calibri, system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: var(--ui);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, #f3e2c4 0%, transparent 50%),
+    radial-gradient(900px 400px at 100% 0%, #dce8df 0%, transparent 46%),
+    var(--parchment);
+  min-height: 100%;
+}
+
+button, input, select, textarea { font-family: inherit; }
+button { cursor: pointer; }
+img { max-width: 100%; }
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar) 1fr;
+  min-height: 100%;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, var(--green-deep), var(--green) 55%, #1b332a);
+  color: #f4ead8;
+  padding: 22px 16px 18px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 8px 0 30px rgba(18, 30, 24, 0.18);
+  z-index: 5;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 8px 16px;
+  border-bottom: 1px solid rgba(244, 234, 216, 0.12);
+  margin-bottom: 10px;
+}
+.brand-mark {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #e8c98a, #c4922e);
+  color: var(--green-deep);
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.25);
+}
+.brand h1 {
+  font-family: var(--font);
+  font-size: 18px;
+  margin: 0;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+.brand p {
+  margin: 3px 0 0;
+  font-size: 11px;
+  opacity: 0.72;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 11px 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  opacity: 0.86;
+}
+.nav-btn svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.nav-btn:hover { background: rgba(255,255,255,0.06); }
+.nav-btn.active {
+  background: rgba(232, 201, 138, 0.16);
+  color: #ffe9b5;
+  opacity: 1;
+  box-shadow: inset 3px 0 0 var(--gold-soft);
+}
+
+.sidebar-foot {
+  margin-top: auto;
+  padding: 12px 10px 4px;
+  font-size: 11px;
+  line-height: 1.45;
+  opacity: 0.62;
+}
+
+.main {
+  padding: 28px 32px 80px;
+  max-width: 1280px;
+}
+
+.view { display: none; }
+.view.active { display: block; animation: rise 0.28s ease; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.topbar h2 {
+  font-family: var(--font);
+  font-size: 32px;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.topbar .lede {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 14.5px;
+}
+
+.month-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 6px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+.month-picker button {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--paper-2);
+  color: var(--green);
+  font-size: 16px;
+}
+.month-picker input[type="month"] {
+  border: 0;
+  background: transparent;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  padding: 4px 8px;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.kpi {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px 14px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.kpi::after {
+  content: "";
+  position: absolute;
+  right: -20px; top: -30px;
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: rgba(180, 123, 30, 0.08);
+}
+.kpi .label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+.kpi .value {
+  font-family: var(--font);
+  font-size: 30px;
+  margin: 8px 0 2px;
+  line-height: 1;
+}
+.kpi .hint { font-size: 12.5px; color: var(--ink-soft); }
+.kpi.terra .value { color: var(--terra); }
+.kpi.green .value { color: var(--green-mid); }
+.kpi.gold .value { color: var(--gold); }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: 16px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 18px 16px;
+  margin-bottom: 16px;
+}
+.card h3 {
+  margin: 0 0 14px;
+  font-family: var(--font);
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.card h3 span { font-family: var(--ui); font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+
+.bars { display: flex; align-items: flex-end; gap: 4px; height: 140px; }
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.bar {
+  width: 100%;
+  max-width: 18px;
+  background: linear-gradient(180deg, var(--leaf), var(--green));
+  border-radius: 6px 6px 2px 2px;
+  min-height: 2px;
+}
+.bar.sale { background: linear-gradient(180deg, #d9893b, var(--terra)); }
+.bar-col small {
+  font-size: 9px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+.table-wrap { overflow: auto; border-radius: 12px; border: 1px solid var(--line); }
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  background: #fffdf8;
+}
+table.data th {
+  background: var(--green);
+  color: #f6edd8;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  padding: 10px 8px;
+  text-align: right;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+table.data th:first-child, table.data td:first-child { text-align: left; }
+table.data td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+}
+table.data tbody tr:nth-child(even) { background: #f8f1e4; }
+table.data tbody tr:hover { background: #efe3c8; }
+table.data tfoot td {
+  font-weight: 750;
+  background: #efe2c8;
+  border-top: 2px solid var(--gold);
+}
+table.data input[type="number"], table.data input[type="text"] {
+  width: 72px;
+  padding: 5px 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  text-align: right;
+  border-radius: 8px;
+  color: inherit;
+}
+table.data input.wide {
+  width: 100%;
+  min-width: 110px;
+  text-align: left;
+}
+table.data input.mid { width: 88px; }
+table.data input:focus {
+  outline: 0;
+  background: #fff;
+  border-color: var(--gold);
+}
+table.data .muted { color: var(--ink-soft); }
+table.data .warn td, table.data td.warn { color: var(--terra); font-weight: 700; }
+.today-row { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.span-2 { grid-column: span 2; }
+.field.span-4 { grid-column: span 4; }
+.field label {
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.field input, .field select, .field textarea {
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 15px;
+  color: var(--ink);
+}
+.field textarea { min-height: 84px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: 2px solid rgba(180,123,30,0.35);
+  border-color: var(--gold);
+}
+
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.btn-primary { background: var(--green); color: #f7edd8; }
+.btn-primary:hover { background: var(--green-mid); }
+.btn-gold { background: var(--gold); color: #1c1408; }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+}
+.btn-danger { background: var(--terra); color: white; }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+.pill.ok { background: #e3f1e7; color: var(--ok); border-color: #b7d8c2; }
+.pill.bad { background: var(--terra-soft); color: var(--terra); border-color: #e4b4a8; }
+.pill.gold { background: #f8ebcf; color: #8a5a10; border-color: var(--gold-soft); }
+
+.preview-stock {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #243f35, #3b6a55);
+  color: #f6edd8;
+  margin-top: 8px;
+}
+.preview-stock b { font-family: var(--font); font-size: 26px; }
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffdf8;
+}
+.item h4 { margin: 0; font-size: 15px; }
+.item p { margin: 3px 0 0; font-size: 12.5px; color: var(--ink-soft); }
+
+.flock-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.flock {
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  min-height: 168px;
+  position: relative;
+}
+.flock .bldg {
+  font-family: var(--font);
+  font-size: 28px;
+  color: var(--green);
+  line-height: 1;
+}
+.flock .count {
+  font-size: 22px;
+  font-weight: 750;
+  margin-top: 10px;
+}
+.flock .meta { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; line-height: 1.45; }
+.flock .cat {
+  position: absolute;
+  top: 12px; right: 12px;
+}
+
+.dest-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 12px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 16, 10, 0.45);
+  display: none;
+  place-items: center;
+  z-index: 40;
+  padding: 20px;
+}
+.modal-bg.open { display: grid; }
+.modal {
+  background: var(--paper);
+  width: min(560px, 100%);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.28);
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.toast {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: var(--green-deep);
+  color: #f6edd8;
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: none;
+  z-index: 50;
+  box-shadow: var(--shadow);
+}
+.toast.show { display: block; animation: rise 0.2s ease; }
+
+.help {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.split-actions { display: flex; gap: 8px; align-items: center; }
+
+.valeurs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+.val-box {
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.val-box .k { font-size: 11px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.val-box .n { font-family: var(--font); font-size: 22px; margin-top: 4px; }
+.val-box .s { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+.alert {
+  background: #f8ebcf;
+  border: 1px solid var(--gold-soft);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin: 8px 0 12px;
+}
+.modal.wide { width: min(720px, 100%); }
+
+@media (max-width: 840px) {
+  .valeurs { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 1080px) {
+  .kpis, .flock-grid, .grid-3 { grid-template-columns: 1fr 1fr; }
+  .grid-2, .form-grid { grid-template-columns: 1fr 1fr; }
+  .field.span-2, .field.span-4 { grid-column: span 2; }
+}
+@media (max-width: 840px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 4px;
+  }
+  .brand { width: 100%; padding: 4px 6px 8px; margin-bottom: 4px; }
+  .nav-btn { padding: 8px 10px; font-size: 13px; }
+  .sidebar-foot { display: none; }
+  .main { padding: 16px 12px 40px; }
+  .kpis, .flock-grid, .grid-2, .grid-3, .form-grid { grid-template-columns: 1fr; }
+  .field.span-2, .field.span-4 { grid-column: span 1; }
+  .topbar h2 { font-size: 26px; }
+  table.data input { width: 58px; }
+}
+
+@media print {
+  body { background: white; }
+  .sidebar, .btn-row, .month-picker button, .toast, .no-print { display: none !important; }
+  .app { display: block; }
+  .view { display: none !important; }
+  .view.active { display: block !important; }
+  .card, .kpi { box-shadow: none; }
+  .main { padding: 0; max-width: none; }
+}
+
+  .nav-btn svg { width: 18px; height: 18px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark" id="brand-mark"></div>
+        <div>
+          <h1>Poulailler Ste Marie</h1>
+          <p>Bouaké · Inventaire</p>
+        </div>
+      </div>
+      <button class="nav-btn active" data-view="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M9 20v-6h6v6"/></svg>
+        Tableau de bord
+      </button>
+      <button class="nav-btn" data-view="saisie">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 19h14M7 16V8m5 8V5m5 11v-6"/></svg>
+        Saisie du jour
+      </button>
+      <button class="nav-btn" data-view="fiche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        Fiche œufs
+      </button>
+      <button class="nav-btn" data-view="ventes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5c.7-1 4.3-1 5 1s-1.5 2.5-2.5 2.5"/></svg>
+        Ventes
+      </button>
+      <button class="nav-btn" data-view="credits">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14v12H5z"/><path d="M8 7V5h8v2M8 12h5"/></svg>
+        Crédits / tournées
+      </button>
+      <button class="nav-btn" data-view="cheptel">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 18c2-6 6-9 8-9s4 1 8 9M9 9c0-3 1.5-5 3-5s3 2 3 5"/></svg>
+        Cheptel
+      </button>
+      <button class="nav-btn" data-view="stock">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16l-1 12H5L4 8z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
+        Pharmacie
+      </button>
+      <button class="nav-btn" data-view="aliment">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h16M6 20 8 8h8l2 12M10 8V5m4 3V5"/></svg>
+        Aliment
+      </button>
+      <button class="nav-btn" data-view="inventaire">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4h10v16H7z"/><path d="M7 8h10M10 4v4"/></svg>
+        Inventaire
+      </button>
+      <button class="nav-btn" data-view="params">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M4.9 6.5l1.5 1.5M17.6 16l1.5 1.5M3 12h2M19 12h2M4.9 17.5l1.5-1.5M17.6 8l1.5-1.5"/></svg>
+        Paramètres
+      </button>
+      <div class="sidebar-foot">
+        Monastère Bénédictin Ste Marie<br>
+        01 BP 511 Bouaké 01<br>
+        Fichier unique — fonctionne hors connexion.
+      </div>
+    </aside>
+    <main class="main">
+      <section class="view active" id="view-dashboard"></section>
+      <section class="view" id="view-saisie"></section>
+      <section class="view" id="view-fiche"></section>
+      <section class="view" id="view-ventes"></section>
+      <section class="view" id="view-credits"></section>
+      <section class="view" id="view-cheptel"></section>
+      <section class="view" id="view-stock"></section>
+      <section class="view" id="view-aliment"></section>
+      <section class="view" id="view-inventaire"></section>
+      <section class="view" id="view-params"></section>
+    </main>
+  </div>
+  <div class="modal-bg" id="modal"></div>
+  <div class="toast" id="toast"></div>
+  <script>
+const KEY = "poulailler-ste-marie-v1";
+const ORG = {
+  name: "Monastère Bénédictin Ste Marie",
+  address: "01 BP 511 BOUAKE 01",
+  tel: "08 00 28 43 / 59 45 50 99",
+};
+
+const MONTHS_FR = [
+  "janvier","février","mars","avril","mai","juin",
+  "juillet","août","septembre","octobre","novembre","décembre"
+];
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+function pad(n) { return String(n).padStart(2, "0"); }
+function ymd(d) {
+  const x = d instanceof Date ? d : new Date(d);
+  return `${x.getFullYear()}-${pad(x.getMonth() + 1)}-${pad(x.getDate())}`;
+}
+function daysInMonth(ym) {
+  const [y, m] = ym.split("-").map(Number);
+  return new Date(y, m, 0).getDate();
+}
+function addMonths(ym, delta) {
+  const [y, m] = ym.split("-").map(Number);
+  const d = new Date(y, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+}
+function formatFCFA(n) {
+  const v = Math.round(Number(n) || 0);
+  const sign = v < 0 ? "-" : "";
+  return sign + Math.abs(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0") + " F";
+}
+function num(v) {
+  if (v === "" || v == null) return 0;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+}
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"'`]/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;", "`": "&#96;",
+  }[c]));
+}
+const KIND_L = { oeufs: "Œufs (plateaux)", poule: "Poules", coq: "Coqs", autre: "Autre" };
+const PAY_L = { especes: "Espèces", credit: "Crédit", cuisine: "Cuisine", liberal: "Libéralité", aumone: "Aumône" };
+
+function weeksSince(dateStr, asOf) {
+  if (!dateStr) return 0;
+  const a = new Date(dateStr + "T00:00:00");
+  const b = asOf ? new Date(asOf + "T00:00:00") : new Date();
+  const days = Math.floor((b - a) / 86400000);
+  return Math.max(0, Math.floor(days / 7));
+}
+function todayStr() { return ymd(new Date()); }
+
+const AOUT_DAYS = [
+  { d: 1, si: 262, e: 267, v: 421, c: 0, a: 3, l: 0, t: 0 },
+  { d: 2, si: 95, e: 264, v: 0, c: 0, a: 0, l: 0, t: 0 },
+  { d: 3, si: 359, e: 264, v: 358, c: 8, a: 3, l: 1, t: 0 },
+  { d: 4, si: 253, e: 244, v: 259, c: 0, a: 2, l: 1, t: 0 },
+  { d: 5, si: 241, e: 253, v: 244, c: 0, a: 3, l: 1, t: 10 },
+  { d: 6, si: 240, e: 262, v: 240, c: 0, a: 2, l: 1, t: 0 },
+  { d: 7, si: 258, e: 255, v: 258, c: 7, a: 2, l: 0, t: 0 },
+  { d: 8, si: 248, e: 254, v: 413, c: 0, a: 3, l: 0, t: 0 },
+  { d: 9, si: 86, e: 237, v: 0, c: 0, a: 0, l: 0, t: 0 },
+  { d: 10, si: 343, e: 255, v: 342, c: 0, a: 3, l: 0, t: 0 },
+  { d: 11, si: 253, e: 250, v: 253, c: 0, a: 3, l: 0, t: 0 },
+  { d: 12, si: 255, e: 258, v: 255, c: 0, a: 3, l: 1, t: 0 },
+  { d: 13, si: 254, e: 261, v: 254, c: 7, a: 2, l: 0, t: 0 },
+  { d: 14, si: 252, e: 258, v: 252, c: 0, a: 3, l: 0, t: 0 },
+  { d: 15, si: 255, e: 251, v: 385, c: 0, a: 2, l: 0, t: 0 },
+  { d: 16, si: 124, e: 263, v: 0, c: 0, a: 0, l: 0, t: 0 },
+  { d: 17, si: 387, e: 266, v: 386, c: 0, a: 3, l: 1, t: 0 },
+  { d: 18, si: 259, e: 262, v: 259, c: 6, a: 2, l: 0, t: 0 },
+  { d: 19, si: 259, e: 254, v: 254, c: 0, a: 2, l: 0, t: 0 },
+  { d: 20, si: 252, e: 260, v: 252, c: 0, a: 3, l: 1, t: 0 },
+  { d: 21, si: 256, e: 264, v: 256, c: 5, a: 2, l: 0, t: 0 },
+  { d: 22, si: 257, e: 255, v: 434, c: 0, a: 2, l: 0, t: 0 },
+  { d: 23, si: 76, e: 269, v: 0, c: 0, a: 0, l: 0, t: 0 },
+  { d: 24, si: 345, e: 273, v: 345, c: 0, a: 3, l: 1, t: 0 },
+  { d: 25, si: 269, e: 273, v: 269, c: 0, a: 2, l: 0, t: 0 },
+  { d: 26, si: 271, e: 293, v: 271, c: 0, a: 3, l: 1, t: 0 },
+  { d: 27, si: 289, e: 283, v: 289, c: 0, a: 2, l: 1, t: 0 },
+  { d: 28, si: 280, e: 286, v: 280, c: 0, a: 3, l: 0, t: 0 },
+  { d: 29, si: 283, e: 283, v: 425, c: 0, a: 3, l: 0, t: 5 },
+  { d: 30, si: 123, e: 298, v: 0, c: 0, a: 0, l: 0, t: 0 },
+  { d: 31, si: 421, e: 307, v: 539, c: 5, a: 3, l: 1, t: 0 },
+];
+
+function seed() {
+  const eggs = {};
+  AOUT_DAYS.forEach((r) => {
+    eggs[`2026-08-${pad(r.d)}`] = {
+      stockInitial: r.si, entree: r.e, vente: r.v, cuisine: r.c,
+      aumone: r.a, liberalite: r.l, tournee: r.t, nonComm: 0, venteMontant: 0,
+    };
+  });
+  eggs["2026-09-01"] = {
+    stockInitial: 177, entree: 0, vente: 0, cuisine: 0, aumone: 0, liberalite: 0, tournee: 0, nonComm: 0, venteMontant: 0,
+  };
+
+  return {
+    settings: {
+      plateauSize: 30,
+      prixPlateau: 2100,
+      prixPoule: 4600,
+      prixCoq: 3500,
+      prixCuisine: 2000,
+      prixAumone: 1200,
+      prixLiberal: 1700,
+      prixCreditPlateau: 2267,
+      priceSchemeV2: true,
+      orgName: ORG.name,
+      orgAddress: ORG.address,
+      orgTel: ORG.tel,
+    },
+    entities: [
+      { id: "cuisine", name: "Cuisine du monastère", type: "cuisine" },
+      { id: "aumone", name: "Aumône", type: "aumone" },
+      { id: "liberal", name: "Libéralité", type: "liberal" },
+    ],
+    eggs,
+    flocks: [
+      { id: "A", building: "A", breed: "ISA Brown", category: "pondeuse", startDate: "2024-11-15", count: 1882, notes: "" },
+      { id: "B", building: "B", breed: "ISA Brown", category: "pondeuse", startDate: "2026-01-05", count: 2137, notes: "" },
+      { id: "C", building: "C", breed: "ISA Brown", category: "pondeuse", startDate: "2024-07-16", count: 587, notes: "" },
+      { id: "D", building: "D", breed: "NovaGen", category: "pondeuse", startDate: "2025-04-19", count: 3048, notes: "" },
+      { id: "E", building: "E", breed: "Lohmann", category: "pondeuse", startDate: "2025-08-25", count: 2281, notes: "" },
+      { id: "F", building: "F", breed: "ISA Brown", category: "pondeuse", startDate: "2025-01-23", count: 2009, notes: "" },
+      { id: "G", building: "G", breed: "ISA Brown", category: "poulette", startDate: "2026-04-03", count: 2074, notes: "" },
+      { id: "H", building: "H", breed: "ISA Brown", category: "poulette", startDate: "2026-04-03", count: 2018, notes: "" },
+      { id: "COQ", building: "—", breed: "Coqs", category: "coq", startDate: "2025-01-01", count: 50, notes: "Reproducteurs / réforme" },
+    ],
+    flockEvents: [],
+    sales: [
+      { id: uid(), date: "2026-08-31", kind: "oeufs", qty: 8200, unit: "pltx", unitPrice: 2094, total: 17169100, payment: "especes", client: "Ventes du mois", note: "Total espèces août 2026" },
+      { id: uid(), date: "2026-08-31", kind: "coq", qty: 10, unit: "têtes", unitPrice: 3500, total: 35000, payment: "cuisine", client: "Cuisine du monastère", note: "Volailles cuisine" },
+      { id: uid(), date: "2026-08-31", kind: "poule", qty: 51, unit: "têtes", unitPrice: 3000, total: 153000, payment: "cuisine", client: "Cuisine du monastère", note: "Volailles cuisine" },
+    ],
+    credits: [
+      { id: uid(), date: "2026-08-05", client: "À renseigner", phone: "", kind: "oeufs", qty: 10, unit: "pltx", unitPrice: 2267, total: 22670, paid: 0, due: "2026-09-30", note: "Tournée du 5 août", tournee: true },
+      { id: uid(), date: "2026-08-29", client: "À renseigner", phone: "", kind: "oeufs", qty: 5, unit: "pltx", unitPrice: 2266, total: 11330, paid: 0, due: "2026-09-30", note: "Tournée du 29 août — 15 pltx = 34 000 F", tournee: true },
+      { id: uid(), date: "2026-08-31", client: "À renseigner", phone: "", kind: "poule", qty: 15, unit: "têtes", unitPrice: 4600, total: 69000, paid: 0, due: "2026-09-30", note: "15 poules à crédit", tournee: false },
+    ],
+    vet: [
+      { id: uid(), name: "Nati Layer", category: "veto", qty: 5, unit: "kg", value: 14000 },
+      { id: uid(), name: "Suanovil", category: "veto", qty: 1, unit: "kg", value: 20000 },
+      { id: uid(), name: "Polystrongle", category: "veto", qty: 6, unit: "kg", value: 28500 },
+      { id: uid(), name: "Pipérazine", category: "veto", qty: 3, unit: "kg", value: 19500 },
+      { id: uid(), name: "Amino Total", category: "veto", qty: 3, unit: "kg", value: 13600 },
+      { id: uid(), name: "Hepatyril", category: "veto", qty: 1, unit: "kg", value: 8100 },
+      { id: uid(), name: "Amaxy-C", category: "veto", qty: 1, unit: "kg", value: 26000 },
+      { id: uid(), name: "Phosphoneurine", category: "veto", qty: 2, unit: "kg", value: 17000 },
+      { id: uid(), name: "Multivita", category: "veto", qty: 1, unit: "L", value: 11900 },
+      { id: uid(), name: "Despedac", category: "veto", qty: 1, unit: "L", value: 7000 },
+      { id: uid(), name: "Vental", category: "veto", qty: 2, unit: "L", value: 9000 },
+      { id: uid(), name: "Baci-50", category: "veto", qty: 2.5, unit: "L", value: 7130 },
+      { id: uid(), name: "Hépatral", category: "veto", qty: 7, unit: "L", value: 14400 },
+      { id: uid(), name: "Mixtral", category: "veto", qty: 5, unit: "L", value: 9000 },
+      { id: uid(), name: "Oli-Pro", category: "veto", qty: 5, unit: "L", value: 2800 },
+      { id: uid(), name: "Immunes", category: "veto", qty: 5, unit: "L", value: 12200 },
+      { id: uid(), name: "Albendazole", category: "veto", qty: 5, unit: "L", value: 8360 },
+      { id: uid(), name: "Alpha-cyperméthrine", category: "veto", qty: 1, unit: "L", value: 12500 },
+      { id: uid(), name: "Enrosol", category: "veto", qty: 3, unit: "L", value: 7000 },
+      { id: uid(), name: "Virunet", category: "veto", qty: 4, unit: "kg", value: 13600 },
+      { id: uid(), name: "Anti-cox", category: "veto", qty: 1, unit: "kg", value: 40000 },
+      { id: uid(), name: "Lévamisole", category: "veto", qty: 1, unit: "kg", value: 2200 },
+      { id: uid(), name: "Amprolium", category: "veto", qty: 1, unit: "kg", value: 16500 },
+      { id: uid(), name: "Amprol", category: "veto", qty: 2, unit: "L", value: 7600 },
+      { id: uid(), name: "Aquavit", category: "veto", qty: 40, unit: "L", value: 8000 },
+      { id: uid(), name: "Vepromec 300 ml", category: "veto", qty: 3, unit: "flacons", value: 7500 },
+      { id: uid(), name: "Lasota + H120", category: "vaccin", qty: 7, unit: "doses", value: 17500 },
+      { id: uid(), name: "IB + ND", category: "vaccin", qty: 8, unit: "doses", value: 76000 },
+      { id: uid(), name: "Lasota", category: "vaccin", qty: 3, unit: "doses", value: 6000 },
+      { id: uid(), name: "HB1 + H120", category: "vaccin", qty: 2, unit: "doses", value: 5000 },
+      { id: uid(), name: "Clone 30", category: "vaccin", qty: 2, unit: "doses", value: 4000 },
+      { id: uid(), name: "Orni Brown", category: "vaccin", qty: 2, unit: "doses", value: 4000 },
+      { id: uid(), name: "Gumboro L", category: "vaccin", qty: 1, unit: "doses", value: 2500 },
+      { id: uid(), name: "Corymune 7K", category: "vaccin", qty: 1, unit: "doses", value: 68000 },
+      { id: uid(), name: "Alvéoles (colis)", category: "emballage", qty: 304, unit: "colis", value: 851200 },
+    ],
+    feed: [
+      { id: uid(), building: "A", month: "2026-08", type: "ponte", kg: 7666 },
+      { id: uid(), building: "B", month: "2026-08", type: "ponte", kg: 7028 },
+      { id: uid(), building: "C", month: "2026-08", type: "ponte", kg: 3434 },
+      { id: uid(), building: "D", month: "2026-08", type: "ponte", kg: 11050 },
+      { id: uid(), building: "E", month: "2026-08", type: "ponte", kg: 7278 },
+      { id: uid(), building: "F", month: "2026-08", type: "ponte", kg: 6966 },
+      { id: uid(), building: "G", month: "2026-08", type: "croissance", kg: 6817 },
+      { id: uid(), building: "H", month: "2026-08", type: "croissance", kg: 6663 },
+    ],
+    monthNotes: {
+      "2026-08": "Inventaire au 31 août 2026. 113 plateaux cassés. Stock magasin 177 pltx à 368 200 F. Aliment 53 802 kg.",
+    },
+  };
+}
+
+function migrate(data) {
+  const base = seed();
+  const settings = { ...base.settings, ...(data.settings || {}) };
+  if (!settings.priceSchemeV2) {
+    settings.prixCuisine = 2000;
+    settings.prixAumone = 1200;
+    settings.prixLiberal = 1700;
+    settings.prixCreditPlateau = settings.prixCreditPlateau || 2267;
+    settings.priceSchemeV2 = true;
+  }
+  settings.prixAumone = settings.prixAumone ?? 1200;
+  settings.prixLiberal = settings.prixLiberal ?? 1700;
+  settings.prixCuisine = settings.prixCuisine ?? 2000;
+  let credits = data.credits;
+  let sales = data.sales || [];
+  if (!credits) {
+    credits = sales.filter((s) => s.payment === "credit").map((s) => ({
+      id: s.id || uid(), date: s.date, client: s.client || "À renseigner", phone: "",
+      kind: s.kind, qty: s.qty, unit: s.unit || (s.kind === "oeufs" ? "pltx" : "têtes"),
+      unitPrice: s.unitPrice, total: s.total, paid: 0, due: "", note: s.note || "",
+      tournee: s.kind === "oeufs",
+    }));
+    sales = sales.filter((s) => s.payment !== "credit");
+  }
+  return {
+    ...base, ...data, settings,
+    eggs: data.eggs || {},
+    flocks: data.flocks || base.flocks,
+    sales,
+    credits,
+    entities: (data.entities && data.entities.length) ? data.entities : base.entities,
+    vet: data.vet || [],
+    feed: data.feed || [],
+    flockEvents: data.flockEvents || [],
+    monthNotes: data.monthNotes || {},
+  };
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return seed();
+    return migrate(JSON.parse(raw));
+  } catch {
+    return seed();
+  }
+}
+
+let state = load();
+let ui = {
+  view: "dashboard",
+  month: "2026-09",
+  saisieDate: todayStr().startsWith("2026-09") ? todayStr() : "2026-09-09",
+};
+
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function emptyDay() {
+  return { stockInitial: null, entree: 0, vente: 0, cuisine: 0, aumone: 0, liberalite: 0, tournee: 0, nonComm: 0, venteMontant: 0 };
+}
+function getDay(date) { return { ...emptyDay(), ...(state.eggs[date] || {}) }; }
+function stockFinalOf(rec) {
+  return num(rec.stockInitial) + num(rec.entree) - num(rec.vente) - num(rec.cuisine)
+    - num(rec.aumone) - num(rec.liberalite) - num(rec.tournee) - num(rec.nonComm);
+}
+function previousDate(date) {
+  const d = new Date(date + "T00:00:00");
+  d.setDate(d.getDate() - 1);
+  return ymd(d);
+}
+function lastKnownStock(date, hops = 0) {
+  if (hops > 800) return 0;
+  const rec = state.eggs[date];
+  if (!rec) return lastKnownStock(previousDate(date), hops + 1);
+  const si = rec.stockInitial != null && rec.stockInitial !== ""
+    ? num(rec.stockInitial)
+    : lastKnownStock(previousDate(date), hops + 1);
+  return stockFinalOf({ ...emptyDay(), ...rec, stockInitial: si });
+}
+function resolvedDay(date) {
+  const rec = getDay(date);
+  const stockInitial = rec.stockInitial != null && rec.stockInitial !== ""
+    ? num(rec.stockInitial)
+    : lastKnownStock(previousDate(date));
+  const full = { ...rec, stockInitial };
+  return { ...full, stockFinal: stockFinalOf(full) };
+}
+function monthDates(ym) {
+  return Array.from({ length: daysInMonth(ym) }, (_, i) => `${ym}-${pad(i + 1)}`);
+}
+
+function entityName(type) {
+  const e = (state.entities || []).find((x) => x.id === type || x.type === type);
+  if (e) return e.name;
+  return { cuisine: "Cuisine", aumone: "Aumône", liberal: "Libéralité" }[type] || type;
+}
+function creditStatus(c) {
+  const paid = num(c.paid), tot = num(c.total);
+  if (tot <= 0 || paid >= tot) return "solde";
+  if (paid > 0) return "partiel";
+  return "ouvert";
+}
+function monthCredits(ym) {
+  return (state.credits || []).filter((c) => c.date.startsWith(ym));
+}
+
+function monthStats(ym) {
+  const rows = monthDates(ym).map(resolvedDay);
+  const sum = (k) => rows.reduce((a, r) => a + num(r[k]), 0);
+  const ventesArgent = (state.sales || []).filter((s) => s.date.startsWith(ym));
+  const cash = ventesArgent.filter((s) => s.payment === "especes").reduce((a, s) => a + num(s.total), 0);
+  const credits = monthCredits(ym);
+  const credit = credits.reduce((a, s) => a + num(s.total), 0);
+  const creditPaid = credits.reduce((a, s) => a + num(s.paid), 0);
+  const volaillesCuisine = ventesArgent.filter((s) => s.payment === "cuisine").reduce((a, s) => a + num(s.total), 0);
+  const s = state.settings;
+  const cuisine = sum("cuisine"), aumone = sum("aumone"), liberalite = sum("liberalite");
+  const cuisineOeufs = cuisine * num(s.prixCuisine);
+  return {
+    rows, entree: sum("entree"), vente: sum("vente"), cuisine, aumone, liberalite,
+    tournee: sum("tournee"), nonComm: sum("nonComm"),
+    stockDebut: rows[0].stockInitial, stockFin: rows[rows.length - 1].stockFinal,
+    cash, credit, creditPaid, creditDue: credit - creditPaid, credits,
+    creditOeufsQty: credits.filter((c) => c.kind === "oeufs").reduce((a, c) => a + num(c.qty), 0),
+    cuisineOeufs, cuisineVolailles: volaillesCuisine,
+    cuisineVal: cuisineOeufs + volaillesCuisine,
+    aumoneVal: aumone * num(s.prixAumone),
+    liberalVal: liberalite * num(s.prixLiberal),
+    sales: ventesArgent,
+  };
+}
+
+function flockTotals() {
+  const t = { pondeuse: 0, poulette: 0, coq: 0, autre: 0 };
+  state.flocks.forEach((f) => { t[f.category] = (t[f.category] || 0) + num(f.count); });
+  t.all = t.pondeuse + t.poulette + t.coq + t.autre;
+  return t;
+}
+
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+function setView(v) {
+  ui.view = v;
+  document.querySelectorAll(".nav-btn").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
+  document.querySelectorAll(".view").forEach((s) => s.classList.toggle("active", s.id === "view-" + v));
+  render();
+}
+
+function henSvg() {
+  return `<svg viewBox="0 0 64 64" width="28" height="28" fill="currentColor"><path d="M38 10c2 0 6 3 6 7 4 1 10 6 10 13 0 6-4 10-9 12-1 6-6 12-15 12H18c-6 0-12-6-12-14 0-9 8-14 16-14 1-5 5-10 11-12 1-3 3-4 5-4zm-2 6c-5 1-8 6-8 10h8c3-3 4-7 0-10z"/></svg>`;
+}
+function monthPickerHtml() {
+  return `<div class="month-picker">
+    <button data-action="month-delta" data-delta="-1">‹</button>
+    <input type="month" id="monthInput" value="${ui.month}">
+    <button data-action="month-delta" data-delta="1">›</button>
+  </div>`;
+}
+
+function renderDashboard() {
+  const ym = ui.month;
+  const st = monthStats(ym);
+  const ft = flockTotals();
+  const [y, m] = ym.split("-").map(Number);
+  const label = MONTHS_FR[m - 1] + " " + y;
+  const maxBar = Math.max(1, ...st.rows.map((r) => Math.max(r.entree, r.vente)));
+  const bars = st.rows.map((r, i) => {
+    const h1 = Math.round((r.entree / maxBar) * 100);
+    const h2 = Math.round((r.vente / maxBar) * 100);
+    return `<div class="bar-col" title="Jour ${i + 1}"><div class="bar" style="height:${h1}%"></div><div class="bar sale" style="height:${h2}%;margin-top:2px;opacity:.9"></div><small>${i + 1}</small></div>`;
+  }).join("");
+  const today = resolvedDay(ui.saisieDate);
+  const pond = ft.pondeuse || 0;
+  const pontePct = pond ? ((st.entree * state.settings.plateauSize) / (pond * daysInMonth(ym)) * 100) : 0;
+
+  document.getElementById("view-dashboard").innerHTML = `
+    <div class="topbar">
+      <div><h2>Tableau de bord</h2><p class="lede">Cheptel, ponte et caisse — ${label}</p></div>
+      ${monthPickerHtml()}
+    </div>
+    <div class="kpis">
+      <div class="kpi green"><div class="label">Effectif</div><div class="value">${ft.all.toLocaleString("fr-FR")}</div><div class="hint">${ft.pondeuse.toLocaleString("fr-FR")} pondeuses · ${ft.poulette.toLocaleString("fr-FR")} poulettes · ${ft.coq} coqs</div></div>
+      <div class="kpi"><div class="label">Entrées ${label}</div><div class="value">${st.entree.toLocaleString("fr-FR")}</div><div class="hint">plateaux · ponte ${pontePct.toFixed(1)} %</div></div>
+      <div class="kpi terra"><div class="label">Ventes espèces</div><div class="value">${st.vente.toLocaleString("fr-FR")}</div><div class="hint">${formatFCFA(st.cash)}</div></div>
+      <div class="kpi gold"><div class="label">Stock magasin</div><div class="value">${st.stockFin.toLocaleString("fr-FR")}</div><div class="hint">${formatFCFA(st.stockFin * state.settings.prixPlateau)}</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3>Ponte et ventes <span>vert = entrée · terracotta = vente</span></h3><div class="bars">${bars}</div></div>
+      <div class="card">
+        <h3>Saisie du jour <span>${ui.saisieDate}</span></h3>
+        <p class="help">Stock initial ${today.stockInitial} pltx · entrée ${today.entree} · vente ${today.vente} · final <b>${today.stockFinal}</b>.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" data-action="goto" data-view="saisie">Enregistrer la journée</button>
+          <button class="btn btn-ghost" data-action="goto" data-view="credits">Crédits / tournées</button>
+        </div>
+        <div class="dest-legend" style="margin-top:16px">
+          <span class="pill">${esc(entityName("cuisine"))} ${st.cuisine} · ${formatFCFA(st.cuisineOeufs)}</span>
+          <span class="pill">${esc(entityName("aumone"))} ${st.aumone} · ${formatFCFA(st.aumoneVal)}</span>
+          <span class="pill">${esc(entityName("liberal"))} ${st.liberalite} · ${formatFCFA(st.liberalVal)}</span>
+          <span class="pill gold">Reste dû ${formatFCFA(st.creditDue)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card"><h3>Bandes</h3>
+      <div class="flock-grid">${state.flocks.filter((f) => f.category !== "coq").map((f) => `
+        <div class="flock">
+          <span class="pill cat ${f.category === "poulette" ? "gold" : "ok"}">${f.category}</span>
+          <div class="bldg">${esc(f.building)}</div>
+          <div class="count">${num(f.count).toLocaleString("fr-FR")}</div>
+          <div class="meta">${esc(f.breed)}<br>${weeksSince(f.startDate)}ᵉ semaine · ${f.startDate}</div>
+        </div>`).join("")}
+      </div>
+    </div>`;
+}
+
+function renderSaisie() {
+  const date = ui.saisieDate;
+  const rec = resolvedDay(date);
+  const s = state.settings;
+  const dayCredits = (state.credits || []).filter((c) => c.date === date);
+  const clients = [...new Set((state.credits || []).map((c) => c.client).filter(Boolean))];
+  document.getElementById("view-saisie").innerHTML = `
+    <div class="topbar">
+      <div><h2>Saisie quotidienne</h2><p class="lede">Destinations valorisées + détail des crédits / tournées</p></div>
+      ${monthPickerHtml()}
+    </div>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field"><label>Date</label><input type="date" id="saisie-date" value="${date}"></div>
+        <div class="field"><label>Stock initial (pltx)</label><input type="number" id="f-si" value="${rec.stockInitial}"></div>
+        <div class="field"><label>Entrée / ponte</label><input type="number" id="f-e" value="${rec.entree}"></div>
+        <div class="field"><label>Vente espèces (pltx)</label><input type="number" id="f-v" value="${rec.vente}"></div>
+        <div class="field"><label>${esc(entityName("cuisine"))} (${formatFCFA(s.prixCuisine)}/pltx)</label><input type="number" id="f-c" value="${rec.cuisine}"></div>
+        <div class="field"><label>${esc(entityName("aumone"))} (${formatFCFA(s.prixAumone)}/pltx)</label><input type="number" id="f-a" value="${rec.aumone}"></div>
+        <div class="field"><label>${esc(entityName("liberal"))} (${formatFCFA(s.prixLiberal)}/pltx)</label><input type="number" id="f-l" value="${rec.liberalite}"></div>
+        <div class="field"><label>Tournée / crédit (pltx)</label><input type="number" id="f-t" value="${rec.tournee}"></div>
+        <div class="field"><label>Cassés / non comm.</label><input type="number" id="f-nc" value="${rec.nonComm}"></div>
+        <div class="field"><label>Montant espèces (F)</label><input type="number" id="f-vm" value="${rec.venteMontant || ""}" placeholder="${rec.vente * s.prixPlateau}"></div>
+        <div class="field span-2"><label>Note vente espèces</label><input type="text" id="f-note" placeholder="Facultatif"></div>
+      </div>
+      <div class="valeurs">
+        <div class="val-box"><div class="k">${esc(entityName("cuisine"))}</div><div class="n" id="lv-c">${formatFCFA(rec.cuisine * s.prixCuisine)}</div><div class="s" id="ls-c">${rec.cuisine} × ${formatFCFA(s.prixCuisine)}</div></div>
+        <div class="val-box"><div class="k">${esc(entityName("aumone"))}</div><div class="n" id="lv-a">${formatFCFA(rec.aumone * s.prixAumone)}</div><div class="s" id="ls-a">${rec.aumone} × ${formatFCFA(s.prixAumone)}</div></div>
+        <div class="val-box"><div class="k">${esc(entityName("liberal"))}</div><div class="n" id="lv-l">${formatFCFA(rec.liberalite * s.prixLiberal)}</div><div class="s" id="ls-l">${rec.liberalite} × ${formatFCFA(s.prixLiberal)}</div></div>
+      </div>
+      <div class="preview-stock" id="live-stock"><div>Stock final du jour</div><b>${rec.stockFinal} pltx</b></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" data-action="save-saisie">Enregistrer la journée</button>
+        <button class="btn btn-ghost" data-action="save-saisie-next">Enregistrer et jour suivant</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Crédit / tournée du jour <span>nom du client, qté, prix, échéance</span></h3>
+      <p class="help">Les plateaux en tournée sont des ventes à crédit. Indiquez qui a reçu, combien, à quel prix, et ce qui a déjà été versé.</p>
+      <div class="form-grid">
+        <div class="field"><label>Client (corrigeable)</label>
+          <input type="text" id="cr-client" list="cr-clients" placeholder="Nom du débiteur">
+          <datalist id="cr-clients">${clients.map((c) => `<option value="${esc(c)}">`).join("")}</datalist>
+        </div>
+        <div class="field"><label>Téléphone</label><input type="text" id="cr-phone"></div>
+        <div class="field"><label>Nature</label>
+          <select id="cr-kind">
+            <option value="oeufs">Plateaux d'œufs (tournée)</option>
+            <option value="poule">Poules</option>
+            <option value="coq">Coqs</option>
+          </select>
+        </div>
+        <div class="field"><label>Quantité</label><input type="number" id="cr-qty" value="${rec.tournee || 1}"></div>
+        <div class="field"><label>Prix unitaire (F)</label><input type="number" id="cr-pu" value="${s.prixCreditPlateau}"></div>
+        <div class="field"><label>Déjà versé (F)</label><input type="number" id="cr-paid" value="0"></div>
+        <div class="field"><label>Échéance</label><input type="date" id="cr-due"></div>
+        <div class="field"><label>Note / lieu de tournée</label><input type="text" id="cr-note" placeholder="Quartier, n° facture…"></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-gold" data-action="add-credit-day">Enregistrer ce crédit</button></div>
+      ${dayCredits.length ? `<div class="table-wrap" style="margin-top:14px"><table class="data">
+        <thead><tr><th>Client</th><th>Nature</th><th>Qté</th><th>Montant</th><th>Versé</th><th>Reste</th><th></th></tr></thead>
+        <tbody>${dayCredits.map((c) => `<tr>
+          <td>${esc(c.client)}</td><td>${KIND_L[c.kind]}</td>
+          <td>${c.qty} ${esc(c.unit || "")}</td><td>${formatFCFA(c.total)}</td>
+          <td>${formatFCFA(c.paid)}</td><td>${formatFCFA(num(c.total) - num(c.paid))}</td>
+          <td><button class="btn btn-ghost" data-action="edit-credit" data-id="${c.id}">Corriger</button></td>
+        </tr>`).join("")}</tbody></table></div>` : ""}
+    </div>
+    <div class="card">
+      <h3>Vente volailles <span>poules, coqs — espèces ou cuisine</span></h3>
+      <div class="form-grid">
+        <div class="field"><label>Type</label>
+          <select id="s-kind"><option value="poule">Poules</option><option value="coq">Coqs</option><option value="autre">Autre</option></select>
+        </div>
+        <div class="field"><label>Quantité</label><input type="number" id="s-qty" value="1"></div>
+        <div class="field"><label>Prix unitaire (F)</label><input type="number" id="s-pu" value="${s.prixPoule}"></div>
+        <div class="field"><label>Règlement</label>
+          <select id="s-pay">
+            <option value="especes">Espèces</option>
+            <option value="cuisine">${esc(entityName("cuisine"))}</option>
+          </select>
+        </div>
+        <div class="field span-2"><label>Client (modifiable)</label><input type="text" id="s-client"></div>
+        <div class="field span-2"><label>Note</label><input type="text" id="s-note"></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" data-action="add-sale">Ajouter au journal</button></div>
+    </div>`;
+  bindSaisieLive();
+}
+
+function bindSaisieLive() {
+  const s = state.settings;
+  const update = () => {
+    const rec = {
+      stockInitial: num(document.getElementById("f-si").value),
+      entree: num(document.getElementById("f-e").value),
+      vente: num(document.getElementById("f-v").value),
+      cuisine: num(document.getElementById("f-c").value),
+      aumone: num(document.getElementById("f-a").value),
+      liberalite: num(document.getElementById("f-l").value),
+      tournee: num(document.getElementById("f-t").value),
+      nonComm: num(document.getElementById("f-nc").value),
+    };
+    const el = document.getElementById("live-stock");
+    if (el) el.querySelector("b").textContent = stockFinalOf(rec) + " pltx";
+    const set = (id, v, sid, sub) => {
+      const n = document.getElementById(id); if (n) n.textContent = v;
+      const p = document.getElementById(sid); if (p) p.textContent = sub;
+    };
+    set("lv-c", formatFCFA(rec.cuisine * s.prixCuisine), "ls-c", rec.cuisine + " × " + formatFCFA(s.prixCuisine));
+    set("lv-a", formatFCFA(rec.aumone * s.prixAumone), "ls-a", rec.aumone + " × " + formatFCFA(s.prixAumone));
+    set("lv-l", formatFCFA(rec.liberalite * s.prixLiberal), "ls-l", rec.liberalite + " × " + formatFCFA(s.prixLiberal));
+  };
+  ["f-si","f-e","f-v","f-c","f-a","f-l","f-t","f-nc"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", update);
+  });
+  const d = document.getElementById("saisie-date");
+  if (d) d.addEventListener("change", () => {
+    ui.saisieDate = d.value;
+    ui.month = d.value.slice(0, 7);
+    renderSaisie();
+  });
+}
+
+function collectSaisie() {
+  return {
+    stockInitial: num(document.getElementById("f-si").value),
+    entree: num(document.getElementById("f-e").value),
+    vente: num(document.getElementById("f-v").value),
+    cuisine: num(document.getElementById("f-c").value),
+    aumone: num(document.getElementById("f-a").value),
+    liberalite: num(document.getElementById("f-l").value),
+    tournee: num(document.getElementById("f-t").value),
+    nonComm: num(document.getElementById("f-nc").value),
+    venteMontant: num(document.getElementById("f-vm").value),
+  };
+}
+
+function saveSaisie(goNext) {
+  const date = document.getElementById("saisie-date").value;
+  const rec = collectSaisie();
+  state.eggs[date] = rec;
+  const nextD = new Date(date + "T00:00:00"); nextD.setDate(nextD.getDate() + 1);
+  const next = ymd(nextD);
+  if (!state.eggs[next]) state.eggs[next] = { ...emptyDay(), stockInitial: stockFinalOf(rec) };
+  else if (state.eggs[next].stockInitial == null) state.eggs[next].stockInitial = stockFinalOf(rec);
+  if (rec.venteMontant > 0) {
+    const existing = state.sales.find((s) => s.date === date && s.kind === "oeufs" && s.payment === "especes" && s.note === "Saisie quotidienne");
+    const row = {
+      id: existing ? existing.id : uid(), date, kind: "oeufs", qty: rec.vente, unit: "pltx",
+      unitPrice: rec.vente ? Math.round(rec.venteMontant / rec.vente) : state.settings.prixPlateau,
+      total: rec.venteMontant, payment: "especes",
+      client: document.getElementById("f-note").value || "Vente du jour", note: "Saisie quotidienne",
+    };
+    if (existing) Object.assign(existing, row); else state.sales.push(row);
+  }
+  save();
+  toast("Journée " + date + " enregistrée");
+  ui.saisieDate = goNext ? next : date;
+  if (goNext) ui.month = next.slice(0, 7);
+  render();
+}
+
+function renderFiche() {
+  const ym = ui.month;
+  const st = monthStats(ym);
+  const [y, m] = ym.split("-").map(Number);
+  const today = todayStr();
+  const rows = st.rows.map((r, i) => {
+    const date = `${ym}-${pad(i + 1)}`;
+    const mismatch = i > 0 && Math.abs(r.stockInitial - st.rows[i - 1].stockFinal) > 0.01;
+    return `<tr class="${date === today ? "today-row" : ""} ${mismatch ? "warn" : ""}">
+      <td>${i + 1}</td>
+      <td><input type="number" data-fiche="${date}" data-k="stockInitial" value="${r.stockInitial}"></td>
+      <td><input type="number" data-fiche="${date}" data-k="entree" value="${r.entree || ""}"></td>
+      <td><input type="number" data-fiche="${date}" data-k="vente" value="${r.vente || ""}"></td>
+      <td><input type="number" data-fiche="${date}" data-k="cuisine" value="${r.cuisine || ""}"></td>
+      <td><input type="number" data-fiche="${date}" data-k="aumone" value="${r.aumone || ""}"></td>
+      <td><input type="number" data-fiche="${date}" data-k="liberalite" value="${r.liberalite || ""}"></td>
+      <td><input type="number" data-fiche="${date}" data-k="tournee" value="${r.tournee || ""}"></td>
+      <td class="muted">${r.stockFinal}</td>
+      <td><input type="number" data-fiche="${date}" data-k="nonComm" value="${r.nonComm || ""}"></td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("view-fiche").innerHTML = `
+    <div class="topbar">
+      <div><h2>Fiche de stock d'œufs</h2>
+        <p class="lede">${esc(state.settings.orgName)} — ${MONTHS_FR[m - 1]} ${y}</p></div>
+      <div class="split-actions">${monthPickerHtml()}<button class="btn btn-ghost no-print" data-action="print">Imprimer</button></div>
+    </div>
+    <div class="card">
+      <div class="table-wrap"><table class="data">
+        <thead><tr>
+          <th>Date</th><th>Stock initial</th><th>Entrée</th><th>Vente</th>
+          <th>${esc(entityName("cuisine"))}<br><small>${formatFCFA(state.settings.prixCuisine)}</small></th>
+          <th>${esc(entityName("aumone"))}<br><small>${formatFCFA(state.settings.prixAumone)}</small></th>
+          <th>${esc(entityName("liberal"))}<br><small>${formatFCFA(state.settings.prixLiberal)}</small></th>
+          <th>Tournée / crédit</th><th>Stock final</th><th>Non comm.</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot>
+          <tr><td>Totaux</td><td></td><td>${st.entree}</td><td>${st.vente}</td><td>${st.cuisine}</td>
+            <td>${st.aumone}</td><td>${st.liberalite}</td><td>${st.tournee}</td><td>${st.stockFin}</td><td>${st.nonComm}</td></tr>
+          <tr><td>Valorisation</td><td></td><td></td><td></td>
+            <td>${formatFCFA(st.cuisineOeufs)}</td><td>${formatFCFA(st.aumoneVal)}</td>
+            <td>${formatFCFA(st.liberalVal)}</td><td>${st.creditOeufsQty} pltx crédit</td><td></td><td></td></tr>
+        </tfoot>
+      </table></div>
+      <p class="help" style="margin-top:10px">Corrigez une case puis quittez-la : c’est enregistré tout de suite.</p>
+    </div>`;
+}
+
+function renderVentes() {
+  const ym = ui.month;
+  const st = monthStats(ym);
+  const rows = state.sales.filter((s) => s.date.startsWith(ym)).sort((a, b) => a.date.localeCompare(b.date));
+  const tot = rows.reduce((a, s) => a + num(s.total), 0);
+  const cash = rows.filter((s) => s.payment === "especes").reduce((a, s) => a + num(s.total), 0);
+
+  document.getElementById("view-ventes").innerHTML = `
+    <div class="topbar">
+      <div><h2>Journal des ventes</h2>
+        <p class="lede">Espèces et volailles. Cliquez Corriger pour changer un nom ou un montant.</p></div>
+      ${monthPickerHtml()}
+    </div>
+    <div class="kpis">
+      <div class="kpi green"><div class="label">Espèces</div><div class="value" style="font-size:22px">${formatFCFA(cash)}</div></div>
+      <div class="kpi"><div class="label">${esc(entityName("cuisine"))} œufs</div><div class="value" style="font-size:22px">${formatFCFA(st.cuisineOeufs)}</div></div>
+      <div class="kpi gold"><div class="label">${esc(entityName("aumone"))}</div><div class="value" style="font-size:22px">${formatFCFA(st.aumoneVal)}</div></div>
+      <div class="kpi terra"><div class="label">${esc(entityName("liberal"))}</div><div class="value" style="font-size:22px">${formatFCFA(st.liberalVal)}</div></div>
+    </div>
+    <div class="card"><div class="table-wrap"><table class="data">
+      <thead><tr><th>Date</th><th>Type</th><th>Qté</th><th>PU</th><th>Montant</th><th>Règlement</th><th>Client</th><th></th></tr></thead>
+      <tbody>${rows.map((s) => `<tr>
+        <td>${s.date}</td><td>${KIND_L[s.kind] || s.kind}</td>
+        <td>${s.qty} ${esc(s.unit || "")}</td><td>${formatFCFA(s.unitPrice)}</td>
+        <td>${formatFCFA(s.total)}</td><td>${PAY_L[s.payment] || s.payment}</td>
+        <td style="text-align:left">${esc(s.client || "")}${s.note ? " · " + esc(s.note) : ""}</td>
+        <td><button class="btn btn-ghost" data-action="edit-sale" data-id="${s.id}">Corriger</button>
+            <button class="btn btn-ghost" data-action="del-sale" data-id="${s.id}">✕</button></td>
+      </tr>`).join("") || `<tr><td colspan="8">Aucune vente ce mois.</td></tr>`}</tbody>
+      <tfoot><tr><td colspan="4">Total journal</td><td>${formatFCFA(tot)}</td><td colspan="3"></td></tr></tfoot>
+    </table></div></div>`;
+}
+
+function renderCredits() {
+  const ym = ui.month;
+  const st = monthStats(ym);
+  const rows = st.credits.slice().sort((a, b) => a.date.localeCompare(b.date));
+  const mismatch = st.tournee !== st.creditOeufsQty;
+  document.getElementById("view-credits").innerHTML = `
+    <div class="topbar">
+      <div><h2>Crédits & tournées</h2>
+        <p class="lede">Nom du client, quantité, prix, versements — tout est corrigeable dans le tableau.</p></div>
+      <div class="split-actions">${monthPickerHtml()}
+        <button class="btn btn-primary" data-action="open-credit">Nouveau crédit</button></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi gold"><div class="label">Crédité</div><div class="value" style="font-size:22px">${formatFCFA(st.credit)}</div></div>
+      <div class="kpi green"><div class="label">Encaissé</div><div class="value" style="font-size:22px">${formatFCFA(st.creditPaid)}</div></div>
+      <div class="kpi terra"><div class="label">Reste dû</div><div class="value" style="font-size:22px">${formatFCFA(st.creditDue)}</div></div>
+      <div class="kpi"><div class="label">Plateaux tournée</div><div class="value">${st.tournee}</div><div class="hint">fiche · ${st.creditOeufsQty} détaillés</div></div>
+    </div>
+    ${mismatch ? `<div class="alert">La fiche indique <b>${st.tournee} plateaux</b> en tournée, les crédits d'œufs totalisent <b>${st.creditOeufsQty}</b>. Ajoutez ou corrigez les lignes (noms des clients).</div>` : ""}
+    <div class="card"><div class="table-wrap"><table class="data">
+      <thead><tr>
+        <th>Date</th><th>Client</th><th>Tél.</th><th>Nature</th><th>Qté</th>
+        <th>PU</th><th>Montant</th><th>Versé</th><th>Reste</th><th>Échéance</th><th>État</th><th></th>
+      </tr></thead>
+      <tbody>${rows.map((c) => {
+        const stt = creditStatus(c);
+        const pill = stt === "solde" ? "ok" : stt === "partiel" ? "gold" : "bad";
+        const lab = stt === "solde" ? "Soldé" : stt === "partiel" ? "Partiel" : "Ouvert";
+        return `<tr>
+          <td>${c.date}</td>
+          <td style="text-align:left"><input class="wide" type="text" data-credit="${c.id}" data-k="client" value="${esc(c.client)}"></td>
+          <td><input class="mid" type="text" data-credit="${c.id}" data-k="phone" value="${esc(c.phone || "")}"></td>
+          <td>${KIND_L[c.kind] || c.kind}</td>
+          <td><input type="number" data-credit="${c.id}" data-k="qty" value="${c.qty}"></td>
+          <td><input type="number" data-credit="${c.id}" data-k="unitPrice" value="${c.unitPrice}"></td>
+          <td>${formatFCFA(c.total)}</td>
+          <td><input type="number" data-credit="${c.id}" data-k="paid" value="${c.paid || 0}"></td>
+          <td>${formatFCFA(num(c.total) - num(c.paid))}</td>
+          <td><input type="date" data-credit="${c.id}" data-k="due" value="${esc(c.due || "")}"></td>
+          <td><span class="pill ${pill}">${lab}</span></td>
+          <td><button class="btn btn-ghost" data-action="edit-credit" data-id="${c.id}">Corriger</button>
+              <button class="btn btn-ghost" data-action="del-credit" data-id="${c.id}">✕</button></td>
+        </tr>`;
+      }).join("") || `<tr><td colspan="12">Aucun crédit ce mois.</td></tr>`}</tbody>
+    </table></div>
+    <p class="help" style="margin-top:10px">Changez le nom du client dans la case, puis cliquez ailleurs. Quantité × prix unitaire = montant.</p>
+    </div>`;
+}
+
+function renderCheptel() {
+  const ft = flockTotals();
+  const asOf = ui.month + "-28";
+  document.getElementById("view-cheptel").innerHTML = `
+    <div class="topbar">
+      <div><h2>Cheptel & bandes</h2>
+        <p class="lede">${ft.all.toLocaleString("fr-FR")} sujets — cliquez Modifier pour corriger un nom de souche ou un effectif</p></div>
+      <button class="btn btn-primary" data-action="open-flock">Nouvelle bande</button>
+    </div>
+    <div class="flock-grid">${state.flocks.map((f) => `
+      <div class="flock">
+        <span class="pill cat ${f.category === "poulette" ? "gold" : f.category === "coq" ? "bad" : "ok"}">${f.category}</span>
+        <div class="bldg">Bât. ${esc(f.building)}</div>
+        <div class="count">${num(f.count).toLocaleString("fr-FR")}</div>
+        <div class="meta">${esc(f.breed)}<br>${weeksSince(f.startDate, asOf)}ᵉ semaine<br>Arrivée ${f.startDate}</div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" data-action="edit-flock" data-id="${f.id}">Modifier</button>
+          <button class="btn btn-ghost" data-action="mortality" data-id="${f.id}">Mortalité</button>
+        </div>
+      </div>`).join("")}
+    </div>
+    <div class="card"><h3>Mouvements récents</h3>
+      <div class="list">${(state.flockEvents || []).slice().reverse().slice(0, 12).map((e) => `
+        <div class="item"><div><h4>${esc(e.type)} · bât. ${esc(e.building)}</h4><p>${e.date} — ${e.qty} sujets ${esc(e.note || "")}</p></div>
+        <div></div><button class="btn btn-ghost" data-action="del-event" data-id="${e.id}">✕</button></div>`).join("")
+        || `<p class="help">Pas encore de mortalité saisie.</p>`}
+      </div>
+    </div>`;
+}
+
+function renderStock() {
+  const groups = { veto: "Produits vétérinaires", vaccin: "Vaccins vivants", emballage: "Emballage / alvéoles" };
+  const html = Object.keys(groups).map((cat) => {
+    const items = state.vet.filter((v) => v.category === cat);
+    const tot = items.reduce((a, v) => a + num(v.value), 0);
+    return `<div class="card"><h3>${groups[cat]} <span>${formatFCFA(tot)}</span></h3>
+      <p class="help">Corrigez le nom du produit directement dans la première colonne.</p>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th>Produit</th><th>Qté</th><th>Unité</th><th>Valeur</th><th></th></tr></thead>
+        <tbody>${items.map((v) => `<tr>
+          <td style="text-align:left"><input class="wide" type="text" data-vet="${v.id}" data-k="name" value="${esc(v.name)}"></td>
+          <td><input type="number" step="0.1" data-vet="${v.id}" data-k="qty" value="${v.qty}"></td>
+          <td><input class="mid" type="text" data-vet="${v.id}" data-k="unit" value="${esc(v.unit)}"></td>
+          <td><input type="number" data-vet="${v.id}" data-k="value" value="${v.value}"></td>
+          <td><button class="btn btn-ghost" data-action="del-vet" data-id="${v.id}">✕</button></td>
+        </tr>`).join("")}</tbody>
+      </table></div></div>`;
+  }).join("");
+  document.getElementById("view-stock").innerHTML = `
+    <div class="topbar">
+      <div><h2>Pharmacie & emballage</h2>
+        <p class="lede">Noms, quantités et valeurs — tout est corrigeable · ${formatFCFA(state.vet.reduce((a, v) => a + num(v.value), 0))}</p></div>
+      <button class="btn btn-primary" data-action="open-vet">Ajouter un produit</button>
+    </div>${html}`;
+}
+
+function renderAliment() {
+  const ym = ui.month;
+  const rows = state.feed.filter((f) => f.month === ym);
+  const ponte = rows.filter((r) => r.type === "ponte").reduce((a, r) => a + num(r.kg), 0);
+  const croiss = rows.filter((r) => r.type === "croissance").reduce((a, r) => a + num(r.kg), 0);
+  document.getElementById("view-aliment").innerHTML = `
+    <div class="topbar">
+      <div><h2>Alimentation</h2><p class="lede">Consommation par bâtiment</p></div>
+      ${monthPickerHtml()}
+    </div>
+    <div class="kpis">
+      <div class="kpi green"><div class="label">Ponte</div><div class="value">${ponte.toLocaleString("fr-FR")}</div><div class="hint">kg</div></div>
+      <div class="kpi gold"><div class="label">Croissance</div><div class="value">${croiss.toLocaleString("fr-FR")}</div><div class="hint">kg</div></div>
+      <div class="kpi"><div class="label">Total</div><div class="value">${(ponte + croiss).toLocaleString("fr-FR")}</div><div class="hint">kg</div></div>
+      <div class="kpi"><div class="label">Par pondeuse</div><div class="value">${(ponte / Math.max(1, flockTotals().pondeuse)).toFixed(1)}</div><div class="hint">kg / mois</div></div>
+    </div>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field"><label>Bâtiment</label><select id="al-b">${["A","B","C","D","E","F","G","H"].map((b) => `<option>${b}</option>`).join("")}</select></div>
+        <div class="field"><label>Type</label><select id="al-t"><option value="ponte">Ponte</option><option value="croissance">Croissance</option></select></div>
+        <div class="field"><label>Kilogrammes</label><input type="number" id="al-kg" value="0"></div>
+        <div class="field"><label>&nbsp;</label><button class="btn btn-primary" data-action="add-feed">Ajouter</button></div>
+      </div>
+      <div class="table-wrap" style="margin-top:14px"><table class="data">
+        <thead><tr><th>Bâtiment</th><th>Type</th><th>kg</th><th></th></tr></thead>
+        <tbody>${rows.map((r) => `<tr><td>${esc(r.building)}</td><td>${r.type}</td><td>${num(r.kg).toLocaleString("fr-FR")}</td>
+          <td><button class="btn btn-ghost" data-action="del-feed" data-id="${r.id}">✕</button></td></tr>`).join("")
+          || `<tr><td colspan="4">Aucune consommation ce mois.</td></tr>`}</tbody>
+      </table></div>
+    </div>`;
+}
+
+function renderInventaire() {
+  const ym = ui.month;
+  const st = monthStats(ym);
+  const ft = flockTotals();
+  const [y, m] = ym.split("-").map(Number);
+  const s = state.settings;
+  const vetTot = state.vet.reduce((a, v) => a + num(v.value), 0);
+  const feedRows = state.feed.filter((f) => f.month === ym);
+  const feedTot = feedRows.reduce((a, r) => a + num(r.kg), 0);
+  const note = state.monthNotes[ym] || "";
+
+  document.getElementById("view-inventaire").innerHTML = `
+    <div class="topbar">
+      <div><h2>Inventaire de clôture</h2><p class="lede">${esc(s.orgName)} — ${MONTHS_FR[m - 1]} ${y}</p></div>
+      <div class="split-actions">${monthPickerHtml()}<button class="btn btn-ghost no-print" data-action="print">Imprimer</button></div>
+    </div>
+    <div class="card"><h3>Gestion des œufs</h3>
+      <div class="list">
+        <div class="item"><div><h4>Total entrée</h4><p>dont ${st.nonComm} plateaux cassés</p></div><b>${st.entree} pltx</b><span></span></div>
+        <div class="item"><div><h4>Vente espèces</h4><p>${st.vente} plateaux</p></div><b>${formatFCFA(st.cash)}</b><span></span></div>
+        <div class="item"><div><h4>Crédits / tournées</h4><p>${st.creditOeufsQty} pltx + volailles — reste dû ${formatFCFA(st.creditDue)}</p></div><b>${formatFCFA(st.credit)}</b><span></span></div>
+        <div class="item"><div><h4>${esc(entityName("cuisine"))}</h4><p>${st.cuisine} pltx × ${formatFCFA(s.prixCuisine)} + volailles ${formatFCFA(st.cuisineVolailles)}</p></div><b>${formatFCFA(st.cuisineVal)}</b><span></span></div>
+        <div class="item"><div><h4>${esc(entityName("liberal"))}</h4><p>${st.liberalite} pltx × ${formatFCFA(s.prixLiberal)}</p></div><b>${formatFCFA(st.liberalVal)}</b><span></span></div>
+        <div class="item"><div><h4>${esc(entityName("aumone"))}</h4><p>${st.aumone} pltx × ${formatFCFA(s.prixAumone)}</p></div><b>${formatFCFA(st.aumoneVal)}</b><span></span></div>
+        <div class="item"><div><h4>Stock de clôture magasin</h4><p>${st.stockFin} pltx × ${formatFCFA(s.prixPlateau)}</p></div><b>${formatFCFA(st.stockFin * s.prixPlateau)}</b><span></span></div>
+      </div>
+    </div>
+    <div class="card"><h3>Détail des crédits du mois</h3>
+      ${st.credits.length ? `<div class="table-wrap"><table class="data">
+        <thead><tr><th>Date</th><th>Client</th><th>Nature</th><th>Qté</th><th>Montant</th><th>Versé</th><th>Reste</th></tr></thead>
+        <tbody>${st.credits.map((c) => `<tr>
+          <td>${c.date}</td><td style="text-align:left">${esc(c.client)}</td>
+          <td>${KIND_L[c.kind]}</td><td>${c.qty}</td>
+          <td>${formatFCFA(c.total)}</td><td>${formatFCFA(c.paid)}</td>
+          <td>${formatFCFA(num(c.total) - num(c.paid))}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>` : `<p class="help">Aucun crédit renseigné.</p>`}
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3>Cheptel</h3>
+        <p><b>${ft.all.toLocaleString("fr-FR")} sujets</b> — ${ft.pondeuse.toLocaleString("fr-FR")} pondeuses, ${ft.poulette.toLocaleString("fr-FR")} poulettes, ${ft.coq} coqs</p>
+        <div class="list" style="margin-top:10px">${state.flocks.map((f) => `
+          <div class="item"><div><h4>${esc(f.building)} · ${esc(f.breed)}</h4><p>${weeksSince(f.startDate, ym + "-28")}ᵉ semaine · ${f.category}</p></div>
+          <b>${num(f.count).toLocaleString("fr-FR")}</b><span></span></div>`).join("")}
+        </div>
+      </div>
+      <div class="card"><h3>Aliment & pharmacie</h3>
+        <p>Aliment : <b>${feedTot.toLocaleString("fr-FR")} kg</b></p>
+        <p>Stock véto / vaccins / alvéoles : <b>${formatFCFA(vetTot)}</b></p>
+      </div>
+    </div>
+    <div class="card"><h3>Notes d'inventaire</h3>
+      <div class="field"><textarea id="month-note">${esc(note)}</textarea></div>
+      <div class="btn-row"><button class="btn btn-primary" data-action="save-note">Enregistrer la note</button></div>
+    </div>`;
+}
+
+function renderParams() {
+  const s = state.settings;
+  const ents = state.entities || [];
+  document.getElementById("view-params").innerHTML = `
+    <div class="topbar"><div><h2>Paramètres</h2><p class="lede">Noms des entités, tarifs des plateaux, sauvegarde</p></div></div>
+    <div class="card"><h3>Identité</h3>
+      <div class="form-grid">
+        <div class="field span-2"><label>Nom</label><input id="p-name" value="${esc(s.orgName)}"></div>
+        <div class="field span-2"><label>Adresse</label><input id="p-addr" value="${esc(s.orgAddress)}"></div>
+        <div class="field span-2"><label>Téléphone</label><input id="p-tel" value="${esc(s.orgTel)}"></div>
+        <div class="field"><label>Œufs par plateau</label><input type="number" id="p-size" value="${s.plateauSize}"></div>
+      </div>
+    </div>
+    <div class="card"><h3>Noms des entités <span>corrigez les intitulés</span></h3>
+      <div class="form-grid">
+        ${ents.map((e) => `<div class="field span-2"><label>${e.type}</label>
+          <input type="text" data-ent="${e.id}" data-k="name" value="${esc(e.name)}"></div>`).join("")}
+      </div>
+    </div>
+    <div class="card"><h3>Tarifs des plateaux (F / unité)</h3>
+      <div class="form-grid">
+        <div class="field"><label>Vente espèces</label><input type="number" id="p-pl" value="${s.prixPlateau}"></div>
+        <div class="field"><label>${esc(entityName("cuisine"))}</label><input type="number" id="p-cuis" value="${s.prixCuisine}"></div>
+        <div class="field"><label>${esc(entityName("aumone"))}</label><input type="number" id="p-aum" value="${s.prixAumone}"></div>
+        <div class="field"><label>${esc(entityName("liberal"))}</label><input type="number" id="p-lib" value="${s.prixLiberal}"></div>
+        <div class="field"><label>Crédit / tournée (défaut)</label><input type="number" id="p-cred" value="${s.prixCreditPlateau}"></div>
+        <div class="field"><label>Prix poule</label><input type="number" id="p-poule" value="${s.prixPoule}"></div>
+        <div class="field"><label>Prix coq</label><input type="number" id="p-coq" value="${s.prixCoq}"></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" data-action="save-params">Enregistrer</button></div>
+    </div>
+    <div class="card"><h3>Sauvegarde</h3>
+      <div class="btn-row">
+        <button class="btn btn-gold" data-action="export">Exporter JSON</button>
+        <label class="btn btn-ghost">Importer JSON<input type="file" id="import-json" accept="application/json" hidden></label>
+        <button class="btn btn-ghost" data-action="reset-seed">Recharger l'exemple août 2026</button>
+        <button class="btn btn-danger" data-action="wipe">Tout effacer</button>
+      </div>
+    </div>`;
+  const imp = document.getElementById("import-json");
+  if (imp) imp.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { state = migrate(JSON.parse(reader.result)); save(); toast("Import réussi"); render(); }
+      catch { toast("Fichier invalide"); }
+    };
+    reader.readAsText(file);
+  });
+}
+
+function openModal(html, wide) {
+  const bg = document.getElementById("modal");
+  bg.innerHTML = `<div class="modal${wide ? " wide" : ""}">${html}</div>`;
+  bg.classList.add("open");
+}
+function closeModal() {
+  const bg = document.getElementById("modal");
+  bg.classList.remove("open");
+  bg.innerHTML = "";
+}
+
+function flockForm(f) {
+  const v = f || { building: "", breed: "ISA Brown", category: "pondeuse", startDate: todayStr(), count: 0, notes: "" };
+  openModal(`
+    <h3 style="font-family:var(--font);margin:0 0 12px">${f ? "Corriger la bande" : "Nouvelle bande"}</h3>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+      <div class="field"><label>Bâtiment</label><input id="m-b" value="${esc(v.building)}"></div>
+      <div class="field"><label>Catégorie</label>
+        <select id="m-c">
+          <option value="pondeuse" ${v.category === "pondeuse" ? "selected" : ""}>Pondeuse</option>
+          <option value="poulette" ${v.category === "poulette" ? "selected" : ""}>Poulette</option>
+          <option value="coq" ${v.category === "coq" ? "selected" : ""}>Coq</option>
+        </select>
+      </div>
+      <div class="field"><label>Souche (nom)</label><input id="m-br" value="${esc(v.breed)}"></div>
+      <div class="field"><label>Date d'arrivée</label><input type="date" id="m-d" value="${v.startDate}"></div>
+      <div class="field"><label>Effectif</label><input type="number" id="m-n" value="${v.count}"></div>
+      <div class="field"><label>Notes</label><input id="m-note" value="${esc(v.notes || "")}"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" data-action="save-flock" data-id="${v.id || ""}">Enregistrer</button>
+      <button class="btn btn-ghost" data-action="close-modal">Annuler</button>
+      ${v.id ? `<button class="btn btn-danger" data-action="del-flock" data-id="${v.id}">Supprimer</button>` : ""}
+    </div>`);
+}
+
+function creditForm(c) {
+  const v = c || {
+    date: ui.saisieDate, client: "", phone: "", kind: "oeufs", qty: 1,
+    unitPrice: state.settings.prixCreditPlateau, paid: 0, due: "", note: "", tournee: true,
+  };
+  openModal(`
+    <h3 style="font-family:var(--font);margin:0 0 12px">${c ? "Corriger le crédit" : "Nouveau crédit / tournée"}</h3>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+      <div class="field"><label>Date</label><input type="date" id="cf-d" value="${v.date}"></div>
+      <div class="field"><label>Client</label><input id="cf-c" value="${esc(v.client)}" placeholder="Nom à corriger"></div>
+      <div class="field"><label>Téléphone</label><input id="cf-p" value="${esc(v.phone || "")}"></div>
+      <div class="field"><label>Nature</label>
+        <select id="cf-k">
+          <option value="oeufs" ${v.kind === "oeufs" ? "selected" : ""}>Plateaux d'œufs</option>
+          <option value="poule" ${v.kind === "poule" ? "selected" : ""}>Poules</option>
+          <option value="coq" ${v.kind === "coq" ? "selected" : ""}>Coqs</option>
+        </select>
+      </div>
+      <div class="field"><label>Quantité</label><input type="number" id="cf-q" value="${v.qty}"></div>
+      <div class="field"><label>Prix unitaire (F)</label><input type="number" id="cf-pu" value="${v.unitPrice}"></div>
+      <div class="field"><label>Déjà versé (F)</label><input type="number" id="cf-paid" value="${v.paid || 0}"></div>
+      <div class="field"><label>Échéance</label><input type="date" id="cf-due" value="${v.due || ""}"></div>
+      <div class="field span-2"><label>Note / lieu de tournée</label><input id="cf-n" value="${esc(v.note || "")}"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" data-action="save-credit" data-id="${v.id || ""}">Enregistrer</button>
+      <button class="btn btn-ghost" data-action="close-modal">Annuler</button>
+    </div>`, true);
+}
+
+function saleForm(s) {
+  openModal(`
+    <h3 style="font-family:var(--font);margin:0 0 12px">Corriger la vente</h3>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+      <div class="field"><label>Date</label><input type="date" id="sf-d" value="${s.date}"></div>
+      <div class="field"><label>Client</label><input id="sf-c" value="${esc(s.client || "")}"></div>
+      <div class="field"><label>Type</label>
+        <select id="sf-k">
+          <option value="oeufs" ${s.kind === "oeufs" ? "selected" : ""}>Œufs</option>
+          <option value="poule" ${s.kind === "poule" ? "selected" : ""}>Poules</option>
+          <option value="coq" ${s.kind === "coq" ? "selected" : ""}>Coqs</option>
+          <option value="autre" ${s.kind === "autre" ? "selected" : ""}>Autre</option>
+        </select>
+      </div>
+      <div class="field"><label>Règlement</label>
+        <select id="sf-p">
+          <option value="especes" ${s.payment === "especes" ? "selected" : ""}>Espèces</option>
+          <option value="cuisine" ${s.payment === "cuisine" ? "selected" : ""}>Cuisine</option>
+        </select>
+      </div>
+      <div class="field"><label>Quantité</label><input type="number" id="sf-q" value="${s.qty}"></div>
+      <div class="field"><label>Prix unitaire (F)</label><input type="number" id="sf-pu" value="${s.unitPrice}"></div>
+      <div class="field span-2"><label>Note</label><input id="sf-n" value="${esc(s.note || "")}"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" data-action="save-sale" data-id="${s.id}">Enregistrer</button>
+      <button class="btn btn-ghost" data-action="close-modal">Annuler</button>
+    </div>`);
+}
+
+function collectCreditFrom(prefix) {
+  const qty = num(document.getElementById(prefix + "q") ? document.getElementById(prefix + "q").value : document.getElementById("cr-qty").value);
+  const pu = num(document.getElementById(prefix + "pu") ? document.getElementById(prefix + "pu").value : document.getElementById("cr-pu").value);
+  if (prefix === "cf-") {
+    return {
+      date: document.getElementById("cf-d").value,
+      client: document.getElementById("cf-c").value.trim() || "À renseigner",
+      phone: document.getElementById("cf-p").value.trim(),
+      kind: document.getElementById("cf-k").value,
+      qty, unitPrice: pu, total: qty * pu,
+      paid: num(document.getElementById("cf-paid").value),
+      due: document.getElementById("cf-due").value,
+      note: document.getElementById("cf-n").value,
+      unit: document.getElementById("cf-k").value === "oeufs" ? "pltx" : "têtes",
+      tournee: document.getElementById("cf-k").value === "oeufs",
+    };
+  }
+  return {
+    date: (document.getElementById("saisie-date") || { value: ui.saisieDate }).value,
+    client: document.getElementById("cr-client").value.trim() || "À renseigner",
+    phone: document.getElementById("cr-phone").value.trim(),
+    kind: document.getElementById("cr-kind").value,
+    qty, unitPrice: pu, total: qty * pu,
+    paid: num(document.getElementById("cr-paid").value),
+    due: document.getElementById("cr-due").value,
+    note: document.getElementById("cr-note").value,
+    unit: document.getElementById("cr-kind").value === "oeufs" ? "pltx" : "têtes",
+    tournee: document.getElementById("cr-kind").value === "oeufs",
+  };
+}
+
+function upsertCredit(id, row, syncTournee) {
+  if (!state.credits) state.credits = [];
+  if (id) {
+    const i = state.credits.findIndex((c) => c.id === id);
+    if (i >= 0) state.credits[i] = { ...state.credits[i], ...row, id };
+    else state.credits.push({ ...row, id: uid() });
+  } else {
+    state.credits.push({ ...row, id: uid() });
+    if (syncTournee && row.kind === "oeufs") {
+      const rec = getDay(row.date);
+      rec.tournee = num(rec.tournee) + num(row.qty);
+      if (rec.stockInitial == null) rec.stockInitial = lastKnownStock(previousDate(row.date));
+      state.eggs[row.date] = rec;
+    }
+  }
+  save();
+}
+
+function render() {
+  const map = {
+    dashboard: renderDashboard, saisie: renderSaisie, fiche: renderFiche,
+    ventes: renderVentes, credits: renderCredits, cheptel: renderCheptel,
+    stock: renderStock, aliment: renderAliment, inventaire: renderInventaire, params: renderParams,
+  };
+  (map[ui.view] || renderDashboard)();
+  const mi = document.getElementById("monthInput");
+  if (mi) mi.addEventListener("change", () => { ui.month = mi.value; render(); });
+}
+
+document.addEventListener("click", (e) => {
+  const nav = e.target.closest(".nav-btn");
+  if (nav) { setView(nav.dataset.view); return; }
+  const btn = e.target.closest("[data-action]");
+  if (!btn) return;
+  const act = btn.dataset.action;
+
+  if (act === "goto") setView(btn.dataset.view);
+  if (act === "month-delta") { ui.month = addMonths(ui.month, Number(btn.dataset.delta)); render(); }
+  if (act === "save-saisie") saveSaisie(false);
+  if (act === "save-saisie-next") saveSaisie(true);
+  if (act === "print") window.print();
+  if (act === "close-modal") closeModal();
+  if (act === "open-flock") flockForm(null);
+  if (act === "edit-flock") flockForm(state.flocks.find((f) => f.id === btn.dataset.id));
+  if (act === "save-flock") {
+    const row = {
+      id: btn.dataset.id || uid(),
+      building: document.getElementById("m-b").value || "?",
+      breed: document.getElementById("m-br").value,
+      category: document.getElementById("m-c").value,
+      startDate: document.getElementById("m-d").value,
+      count: num(document.getElementById("m-n").value),
+      notes: document.getElementById("m-note").value,
+    };
+    const i = state.flocks.findIndex((f) => f.id === row.id);
+    if (i >= 0) state.flocks[i] = row; else state.flocks.push(row);
+    save(); closeModal(); render(); toast("Bande enregistrée");
+  }
+  if (act === "del-flock") {
+    state.flocks = state.flocks.filter((f) => f.id !== btn.dataset.id);
+    save(); closeModal(); render();
+  }
+  if (act === "mortality") {
+    const f = state.flocks.find((x) => x.id === btn.dataset.id);
+    openModal(`
+      <h3 style="font-family:var(--font);margin:0 0 12px">Mortalité — bât. ${esc(f.building)}</h3>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr">
+        <div class="field"><label>Date</label><input type="date" id="mo-d" value="${todayStr()}"></div>
+        <div class="field"><label>Nombre</label><input type="number" id="mo-n" value="1"></div>
+        <div class="field span-2"><label>Type</label>
+          <select id="mo-t"><option value="mortalité">Mortalité</option><option value="réforme">Réforme / vente</option><option value="transfert">Transfert</option></select>
+        </div>
+        <div class="field span-2"><label>Note</label><input id="mo-note"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" data-action="save-mort" data-id="${f.id}">Valider</button>
+        <button class="btn btn-ghost" data-action="close-modal">Annuler</button>
+      </div>`);
+  }
+  if (act === "save-mort") {
+    const f = state.flocks.find((x) => x.id === btn.dataset.id);
+    const q = num(document.getElementById("mo-n").value);
+    f.count = Math.max(0, num(f.count) - q);
+    state.flockEvents.push({
+      id: uid(), date: document.getElementById("mo-d").value, building: f.building,
+      type: document.getElementById("mo-t").value, qty: q, note: document.getElementById("mo-note").value,
+    });
+    save(); closeModal(); render(); toast("Effectif mis à jour");
+  }
+  if (act === "del-event") {
+    state.flockEvents = state.flockEvents.filter((x) => x.id !== btn.dataset.id);
+    save(); render();
+  }
+  if (act === "add-sale") {
+    const qty = num(document.getElementById("s-qty").value);
+    const pu = num(document.getElementById("s-pu").value);
+    const kind = document.getElementById("s-kind").value;
+    state.sales.push({
+      id: uid(),
+      date: document.getElementById("saisie-date") ? document.getElementById("saisie-date").value : ui.saisieDate,
+      kind, qty, unit: kind === "oeufs" ? "pltx" : "têtes",
+      unitPrice: pu, total: qty * pu,
+      payment: document.getElementById("s-pay").value,
+      client: document.getElementById("s-client").value,
+      note: document.getElementById("s-note").value,
+    });
+    if (kind === "poule" || kind === "coq") {
+      const flock = state.flocks.find((f) => f.category === kind);
+      if (flock) flock.count = Math.max(0, num(flock.count) - qty);
+    }
+    save(); toast("Vente ajoutée"); render();
+  }
+  if (act === "edit-sale") saleForm(state.sales.find((s) => s.id === btn.dataset.id));
+  if (act === "save-sale") {
+    const s = state.sales.find((x) => x.id === btn.dataset.id);
+    const qty = num(document.getElementById("sf-q").value);
+    const pu = num(document.getElementById("sf-pu").value);
+    Object.assign(s, {
+      date: document.getElementById("sf-d").value,
+      client: document.getElementById("sf-c").value,
+      kind: document.getElementById("sf-k").value,
+      payment: document.getElementById("sf-p").value,
+      qty, unitPrice: pu, total: qty * pu,
+      note: document.getElementById("sf-n").value,
+    });
+    save(); closeModal(); render(); toast("Vente corrigée");
+  }
+  if (act === "del-sale") {
+    state.sales = state.sales.filter((s) => s.id !== btn.dataset.id);
+    save(); render();
+  }
+  if (act === "open-credit") creditForm(null);
+  if (act === "edit-credit") creditForm((state.credits || []).find((c) => c.id === btn.dataset.id));
+  if (act === "add-credit-day") {
+    const row = collectCreditFrom("cr-");
+    upsertCredit(null, row, true);
+    toast("Crédit enregistré");
+    render();
+  }
+  if (act === "save-credit") {
+    const row = collectCreditFrom("cf-");
+    upsertCredit(btn.dataset.id, row, false);
+    closeModal(); render(); toast("Crédit enregistré");
+  }
+  if (act === "del-credit") {
+    state.credits = (state.credits || []).filter((c) => c.id !== btn.dataset.id);
+    save(); render();
+  }
+  if (act === "open-vet") {
+    openModal(`
+      <h3 style="font-family:var(--font);margin:0 0 12px">Nouveau produit</h3>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr">
+        <div class="field span-2"><label>Nom</label><input id="v-n"></div>
+        <div class="field"><label>Catégorie</label>
+          <select id="v-c"><option value="veto">Véto</option><option value="vaccin">Vaccin</option><option value="emballage">Emballage</option></select>
+        </div>
+        <div class="field"><label>Quantité</label><input type="number" step="0.1" id="v-q" value="1"></div>
+        <div class="field"><label>Unité</label><input id="v-u" value="kg"></div>
+        <div class="field"><label>Valeur (F)</label><input type="number" id="v-val" value="0"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" data-action="save-vet">Ajouter</button>
+        <button class="btn btn-ghost" data-action="close-modal">Annuler</button>
+      </div>`);
+  }
+  if (act === "save-vet") {
+    state.vet.push({
+      id: uid(), name: document.getElementById("v-n").value,
+      category: document.getElementById("v-c").value,
+      qty: num(document.getElementById("v-q").value),
+      unit: document.getElementById("v-u").value,
+      value: num(document.getElementById("v-val").value),
+    });
+    save(); closeModal(); render();
+  }
+  if (act === "del-vet") {
+    state.vet = state.vet.filter((v) => v.id !== btn.dataset.id);
+    save(); render();
+  }
+  if (act === "add-feed") {
+    state.feed.push({
+      id: uid(), building: document.getElementById("al-b").value,
+      month: ui.month, type: document.getElementById("al-t").value,
+      kg: num(document.getElementById("al-kg").value),
+    });
+    save(); render();
+  }
+  if (act === "del-feed") {
+    state.feed = state.feed.filter((f) => f.id !== btn.dataset.id);
+    save(); render();
+  }
+  if (act === "save-note") {
+    state.monthNotes[ui.month] = document.getElementById("month-note").value;
+    save(); toast("Note enregistrée");
+  }
+  if (act === "save-params") {
+    Object.assign(state.settings, {
+      orgName: document.getElementById("p-name").value,
+      orgAddress: document.getElementById("p-addr").value,
+      orgTel: document.getElementById("p-tel").value,
+      plateauSize: num(document.getElementById("p-size").value),
+      prixPlateau: num(document.getElementById("p-pl").value),
+      prixPoule: num(document.getElementById("p-poule").value),
+      prixCoq: num(document.getElementById("p-coq").value),
+      prixCuisine: num(document.getElementById("p-cuis").value),
+      prixAumone: num(document.getElementById("p-aum").value),
+      prixLiberal: num(document.getElementById("p-lib").value),
+      prixCreditPlateau: num(document.getElementById("p-cred").value),
+      priceSchemeV2: true,
+    });
+    document.querySelectorAll("[data-ent]").forEach((inp) => {
+      const e = state.entities.find((x) => x.id === inp.dataset.ent);
+      if (e) e[inp.dataset.k] = inp.value;
+    });
+    save(); toast("Paramètres enregistrés"); render();
+  }
+  if (act === "export") {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `poulailler-${ui.month}.json`;
+    a.click();
+  }
+  if (act === "reset-seed") {
+    if (confirm("Recharger l'exemple août 2026 ? Les saisies actuelles seront remplacées.")) {
+      state = seed(); save(); render(); toast("Exemple rechargé");
+    }
+  }
+  if (act === "wipe") {
+    if (confirm("Effacer toutes les données ?")) {
+      localStorage.removeItem(KEY);
+      state = seed();
+      state.eggs = {}; state.sales = []; state.credits = []; state.feed = [];
+      state.vet = []; state.flockEvents = []; state.monthNotes = {};
+      save(); render();
+    }
+  }
+});
+
+document.addEventListener("change", (e) => {
+  const fiche = e.target.closest("[data-fiche]");
+  if (fiche) {
+    const date = fiche.dataset.fiche;
+    const rec = getDay(date);
+    rec[fiche.dataset.k] = fiche.value === "" ? 0 : num(fiche.value);
+    state.eggs[date] = rec;
+    save();
+    renderFiche();
+    return;
+  }
+  const vet = e.target.closest("[data-vet]");
+  if (vet) {
+    const item = state.vet.find((v) => v.id === vet.dataset.vet);
+    if (item) {
+      const k = vet.dataset.k;
+      item[k] = (k === "name" || k === "unit") ? vet.value : num(vet.value);
+      save();
+      if (k !== "name" && k !== "unit") renderStock();
+    }
+    return;
+  }
+  const cr = e.target.closest("[data-credit]");
+  if (cr) {
+    const item = (state.credits || []).find((c) => c.id === cr.dataset.credit);
+    if (item) {
+      const k = cr.dataset.k;
+      if (k === "client" || k === "phone" || k === "due" || k === "note") item[k] = cr.value;
+      else item[k] = num(cr.value);
+      if (k === "qty" || k === "unitPrice") item.total = num(item.qty) * num(item.unitPrice);
+      save();
+      if (k === "qty" || k === "unitPrice" || k === "paid") renderCredits();
+    }
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (e.target.id === "modal") closeModal();
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("brand-mark").innerHTML = henSvg();
+  setView("dashboard");
+});
+
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a39f840d08eb0144',t:'MTc4OTIyMjQzNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
