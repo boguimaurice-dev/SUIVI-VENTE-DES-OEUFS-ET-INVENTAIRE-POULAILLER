@@ -1949,6 +1949,426 @@ table.data .warn td, table.data td.warn { color: var(--terra); font-weight: 700;
   flex-shrink: 0;
 }
 
+
+/* --- MODERN SAAS & PRICING STYLES --- */
+.saas-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 16px 60px 16px;
+}
+.saas-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.saas-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--sage);
+  text-decoration: none;
+}
+.saas-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.saas-nav-link {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.saas-nav-link:hover {
+  color: var(--sage);
+}
+.saas-hero {
+  background: radial-gradient(circle at 85% 15%, #2a613f 0%, #153822 65%, #0c2416 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 50px 36px;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(21, 56, 34, 0.28);
+}
+.saas-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  color: #ffd700;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.saas-hero h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(26px, 3.8vw, 40px);
+  line-height: 1.25;
+  margin: 0 0 16px 0;
+  color: #ffffff;
+  max-width: 820px;
+}
+.saas-hero p {
+  font-size: clamp(14.5px, 1.8vw, 17px);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 720px;
+  margin: 0 0 28px 0;
+}
+.saas-hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.saas-btn-gold {
+  background: linear-gradient(135deg, #e8c654 0%, #d4af37 100%);
+  color: #12301c;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 13px 26px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.saas-btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+}
+.saas-btn-outline {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 13px 22px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.saas-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.saas-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin: -10px 0 40px 0;
+}
+.saas-stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 14px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.saas-stat-num {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--sage);
+  margin-bottom: 4px;
+}
+.saas-stat-lbl {
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.saas-sec-head {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 32px auto;
+}
+.saas-sec-tag {
+  color: var(--sage);
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  display: block;
+}
+.saas-sec-head h2 {
+  font-family: Georgia, serif;
+  font-size: clamp(22px, 3vw, 30px);
+  color: var(--ink);
+  margin: 0 0 10px 0;
+}
+.saas-sec-head p {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0;
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 22px;
+  margin-bottom: 45px;
+  align-items: stretch;
+}
+.price-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow);
+}
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+}
+.price-card.featured {
+  border: 2px solid #d4af37;
+  background: linear-gradient(180deg, #ffffff 0%, #fbf9f2 100%);
+  box-shadow: 0 14px 35px rgba(212, 175, 55, 0.22);
+}
+.price-ribbon {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: #d4af37;
+  color: #12301c;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.price-plan-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.price-plan-desc {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+  min-height: 38px;
+  line-height: 1.4;
+}
+.price-amount-box {
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.price-val {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--sage);
+}
+.price-curr {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: 4px;
+}
+.price-period {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.price-cfa-hint {
+  display: block;
+  font-size: 12px;
+  color: #b84b29;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.price-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px 0;
+  flex: 1;
+}
+.price-features li {
+  font-size: 13px;
+  color: var(--ink);
+  margin-bottom: 11px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  line-height: 1.45;
+}
+.price-check {
+  color: var(--sage);
+  font-weight: bold;
+}
+.price-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+.price-btn.primary {
+  background: var(--sage);
+  color: #fff;
+}
+.price-btn.primary:hover {
+  background: var(--sage-deep);
+}
+.price-btn.gold {
+  background: #d4af37;
+  color: #153822;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+}
+.price-btn.gold:hover {
+  background: #e2be4c;
+}
+.price-btn.ghost {
+  background: transparent;
+  color: var(--sage);
+  border: 1px solid var(--sage);
+}
+.price-btn.ghost:hover {
+  background: rgba(30, 86, 49, 0.06);
+}
+.roi-card {
+  background: linear-gradient(135deg, #f8f6f0 0%, #f0ede1 100%);
+  border: 1px solid #dcd5c5;
+  border-radius: 20px;
+  padding: 32px 26px;
+  margin-bottom: 45px;
+}
+.roi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 28px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .roi-grid { grid-template-columns: 1fr; }
+}
+.roi-slider-box {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+}
+.roi-result-box {
+  background: #153822;
+  color: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 10px 25px rgba(21, 56, 34, 0.25);
+}
+.roi-gain-val {
+  font-size: 34px;
+  font-weight: 800;
+  color: #ffd700;
+  margin: 6px 0 4px 0;
+}
+.roi-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+.roi-break-item small {
+  display: block;
+  font-size: 11px;
+  color: rgba(255,255,255,0.72);
+}
+.roi-break-item b {
+  font-size: 14.5px;
+  color: #fff;
+}
+.privacy-banner {
+  background: #ffffff;
+  border: 1px solid #e2dac9;
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 35px;
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.faq-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.faq-card h4 {
+  margin: 0 0 8px 0;
+  font-size: 14.5px;
+  color: var(--sage);
+}
+.faq-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.workspace-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 86, 49, 0.09);
+  color: var(--sage);
+  border: 1px solid rgba(30, 86, 49, 0.2);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.pro-badge {
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  color: #12301c;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
 </style>
 </head>
 <body>
@@ -6487,107 +6907,553 @@ function renderContactsSync() {
   `;
 }
 
-// --- LANDING PAGE & PRÉSENTATION SAAS ---
+// --- HIGH-CONVERTING SAAS PRESENTATION & LANDING PAGE ---
 function renderLanding() {
   const container = document.getElementById("view-landing");
   if (!container) return;
 
+  const isPro = !!(state.isPro || (state.subscriptionPlan === "pro"));
+  const currentFarm = state.currentFarm || "monastere";
+
   container.innerHTML = `
-    <div class="landing-hero">
-      <div class="landing-badge">✨ Conçu pour et par des éleveurs avicoles en Afrique</div>
-      <h1>Pilotez votre élevage de ponte et vos bâtiments avec sérénité — 100 % Hors-Ligne</h1>
-      <p>
-        De l'arrivée des poulettes jusqu'à la réforme : registres de ponte conformes aux normes des couvoirs,
-        maîtrise des coûts au centime près, gestion des stocks d'œufs, facturation instantanée et partage WhatsApp.
-        <b>Zéro frais d'abonnement internet, zéro unité mobile requise.</b>
-      </p>
-      <div class="landing-cta-row">
-        <button class="landing-btn-primary" data-action="goto" data-view="dashboard">
-          🚀 Accéder à mon Poulailler d'Exploitation
-        </button>
-        <button class="landing-btn-ghost" data-action="goto" data-view="cheptel">
-          📋 Découvrir le Cahier de Ponte & ISA Brown
-        </button>
-      </div>
-    </div>
+    <div class="saas-container">
+      <!-- Modern SaaS Navigation Bar -->
+      <header class="saas-nav">
+        <a class="saas-logo" href="javascript:void(0)" data-action="goto" data-view="landing">
+          <span style="font-size:24px">🐓</span>
+          <span>Avicola<span style="color:#d4af37">SaaS</span></span>
+          <small style="font-size:11px;font-weight:600;color:var(--ink-soft);margin-left:4px">par Poulailler Ste-Marie</small>
+        </a>
 
-    <div class="pillars-grid">
-      <div class="pillar-card">
-        <div class="pillar-icon">📶</div>
-        <h3>100 % Hors-Ligne & 0 Frais de Données</h3>
+        <nav class="saas-nav-links">
+          <a class="saas-nav-link" href="#saas-features">Fonctionnalités</a>
+          <a class="saas-nav-link" href="#saas-pricing">Tarifs &amp; Freemium</a>
+          <a class="saas-nav-link" href="#saas-roi">Calculateur ROI</a>
+          <a class="saas-nav-link" href="#saas-security">Sécurité &amp; Confidentialité</a>
+          <a class="saas-nav-link" href="#saas-faq">FAQ</a>
+          <button class="btn btn-ghost" data-action="open-farm-switcher" style="padding:6px 12px;font-size:12px">
+            🏛️ ${currentFarm === "monastere" ? "Démo Ste-Marie" : "Ma Ferme"} ▼
+          </button>
+          <button class="saas-btn-gold" data-action="goto" data-view="dashboard" style="padding:8px 16px;font-size:13px">
+            🚀 Accéder à l'App
+          </button>
+        </nav>
+      </header>
+
+      <!-- Hero Section -->
+      <section class="saas-hero">
+        <div class="saas-badge-pill">
+          ✨ Le Logiciel SaaS N°1 de Gestion Avicole en Afrique de l'Ouest
+        </div>
+        <h1>
+          Maximisez la ponte de vos poules, stoppez le coulage et sécurisez votre caisse — 100 % Hors-Ligne.
+        </h1>
         <p>
-          L'application fonctionne partout, même en zone rurale sans réseau ni Wi-Fi. Toutes vos données sont stockées localement sur votre téléphone ou ordinateur sans consommer de crédit.
+          Conçu sur le terrain avec les moines du <b>Monastère Sainte-Marie de Bouaké</b> : suivez la ponte jour par jour, comparez vos courbes aux standards officiels ISA Brown, émettez vos factures thermiques 80 mm et partagez vos reçus sur WhatsApp en un clic.
+          <b>Sans abonnement internet coûteux, sans aucune unité mobile requise.</b>
         </p>
+
+        <div class="saas-hero-cta">
+          <button class="saas-btn-gold" data-action="goto" data-view="dashboard">
+            <span>🚀 Tester la Démo Interactive Gratuite</span>
+          </button>
+          <button class="saas-btn-outline" data-action="open-subscription-modal">
+            <span>⭐ Découvrir le Plan Pro (10 $/mois)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Trust & Key Figures Strip -->
+      <div class="saas-stats-strip">
+        <div class="saas-stat-card">
+          <div class="saas-stat-num">100 %</div>
+          <div class="saas-stat-lbl">Fonctionne Sans Connexion Internet (0 Mo)</div>
+        </div>
+        <div class="saas-stat-card">
+          <div class="saas-stat-num">+16 000</div>
+          <div class="saas-stat-lbl">Pondeuses Gérées avec Succès à Bouaké</div>
+        </div>
+        <div class="saas-stat-card">
+          <div class="saas-stat-num">&lt; 60 sec</div>
+          <div class="saas-stat-lbl">Pour Décalquer une Fiche Papier en Photo</div>
+        </div>
+        <div class="saas-stat-card">
+          <div class="saas-stat-num">38× ROI</div>
+          <div class="saas-stat-lbl">Rentabilité Moyenne Constatée par Élevage</div>
+        </div>
       </div>
 
-      <div class="pillar-card">
-        <div class="pillar-icon">🐔</div>
-        <h3>Véritable Cahier de Suivi de Bâtiment</h3>
-        <p>
-          Reproduction exacte de la fiche hebdomadaire (mortalité, éliminés, ponte %, conso aliment g/poule/jour) avec le tracé officiel des <b>courbes standards ISA Brown</b> de la semaine 18 à 78.
-        </p>
+      <!-- Problem vs Solution -->
+      <section style="margin-bottom:50px">
+        <div class="saas-sec-head">
+          <span class="saas-sec-tag">La Fin des Tracas d'Élevage</span>
+          <h2>Pourquoi les Éleveurs Remplacent le Papier par Avicola SaaS</h2>
+          <p>La gestion manuelle coûte cher en pertes d'œufs, erreurs d'alimentation et créances clients impayées.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" class="problem-solution-grid">
+          <div style="background:#fff3f0;border:1px solid #f2cfc9;border-radius:14px;padding:24px">
+            <h3 style="color:#b84b29;margin:0 0 14px 0;font-size:16px;display:flex;align-items:center;gap:8px">
+              <span>❌</span> Avant : La Gestion Papier &amp; Approximative
+            </h3>
+            <ul style="margin:0;padding-left:18px;font-size:13.5px;color:#6b2e1e;line-height:1.7">
+              <li>Cahiers de ramassage tachés, déchirés ou perdus par les ouvriers.</li>
+              <li>Chutes de ponte détectées trop tard (coût : plusieurs dizaines de milliers de FCFA).</li>
+              <li>Calculs fastidieux du taux de ponte et de la ration par poule.</li>
+              <li>Oubli des créances accordées aux revendeuses d'œufs.</li>
+              <li>Blocage total des logiciels classiques dès qu'il n'y a plus de réseau.</li>
+            </ul>
+          </div>
+
+          <div style="background:#edf7f0;border:1px solid #c2e2cc;border-radius:14px;padding:24px">
+            <h3 style="color:var(--sage);margin:0 0 14px 0;font-size:16px;display:flex;align-items:center;gap:8px">
+              <span>✅</span> Avec Avicola SaaS : Rigueur &amp; Sérénité Totale
+            </h3>
+            <ul style="margin:0;padding-left:18px;font-size:13.5px;color:#184227;line-height:1.7">
+              <li><b>100 % Hors-Ligne :</b> Fonctionne en plein poulailler sans réseau ni data.</li>
+              <li><b>Alertes ISA Brown :</b> Comparaison instantanée avec les standards officiels de ponte.</li>
+              <li><b>Facturation WhatsApp :</b> Reçus et factures 80 mm envoyés directement aux clients.</li>
+              <li><b>Assistant Vocal Frère Célestin :</b> Posez vos questions à la voix sans toucher l'écran.</li>
+              <li><b>Saisie Photo Décalquée :</b> Prenez la fiche en photo et validez en 1 minute.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Grid -->
+      <section id="saas-features" style="margin-bottom:50px">
+        <div class="saas-sec-head">
+          <span class="saas-sec-tag">Module par Module</span>
+          <h2>Une Suite Complète Dédiée aux Éleveurs de Pondeuses</h2>
+          <p>Tout ce dont vous avez besoin pour piloter de 200 à 50 000 poules avec une précision chirurgicale.</p>
+        </div>
+
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon">🐔</div>
+            <h3>Cahier Poulailler &amp; Courbes ISA Brown</h3>
+            <p>
+              Modèle conforme aux normes SIPRA : suivi de la mortalité, des éliminés, de la ponte % et de l'aliment (g/poule/jour) de la semaine 18 jusqu'à la réforme (semaine 78+).
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">🧾</div>
+            <h3>Facturation A4 &amp; Tickets Caisse 80 mm</h3>
+            <p>
+              Imprimez sur imprimante thermique de poche Bluetooth ou au format A4. Calcul automatique du montant en toutes lettres et bouton direct de partage WhatsApp.
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">🎙️</div>
+            <h3>Frère Célestin — Assistant Vocal IA</h3>
+            <p>
+              Interrogez vocalement l'état de la ponte, le stock d'aliment, la caisse ou obtenez des conseils vétérinaires d'urgence (coccidiose, fientes anormales, picage).
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">📷</div>
+            <h3>Saisie Photo Assistée (Décalquage)</h3>
+            <p>
+              Visualisez la photo de votre fiche papier à gauche avec zoom et rotation, et remplissez la grille de calcul 7 jours à droite sans le moindre aller-retour.
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">👥</div>
+            <h3>CRM Clients &amp; Suivi des Dettes</h3>
+            <p>
+              Synchronisez votre répertoire téléphonique, importez/exportez vos contacts en vCard/CSV et relancez vos impayés en 1 clic sur WhatsApp.
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">📱</div>
+            <h3>PWA Installable &amp; Zéro Frais Data</h3>
+            <p>
+              Installez l'application directement sur l'écran d'accueil de votre smartphone Android ou iPhone comme une application native. Zéro abonnement télécom requis.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive ROI Calculator -->
+      <section id="saas-roi" class="roi-card">
+        <div class="roi-grid">
+          <div>
+            <span class="saas-sec-tag">Simulateur de Rentabilité</span>
+            <h3 style="font-family:Georgia,serif;font-size:22px;margin:0 0 10px 0;color:var(--sage)">
+              Calculez Vos Gains Mensuels avec Avicola SaaS
+            </h3>
+            <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:20px">
+              Déplacez le curseur pour indiquer le nombre de pondeuses présentes sur votre exploitation :
+            </p>
+
+            <div class="roi-slider-box">
+              <div class="roi-slider-header">
+                <span style="font-size:13px;font-weight:700;color:var(--ink)">Effectif de mon élevage :</span>
+                <span style="font-size:18px;font-weight:800;color:var(--sage)" id="roi-hen-count">3 000</span>
+                <span style="font-size:13px;color:var(--ink-soft)">poules</span>
+              </div>
+              <input type="range" class="roi-slider" min="300" max="15000" step="100" value="3000" oninput="updateRoiCalc(this.value)">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft)">
+                <span>300 poules</span>
+                <span>5 000</span>
+                <span>15 000 poules</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="roi-result-box">
+            <small style="color:rgba(255,255,255,0.75);font-size:11.5px;text-transform:uppercase;letter-spacing:0.5px">Bénéfice Financier Estimé</small>
+            <div class="roi-gain-val" id="roi-gain-total">+245 000 FCFA / mois</div>
+            <div style="font-size:13px;color:#ffd700;font-weight:600" id="roi-gain-ratio">38× votre abonnement rentabilisé</div>
+
+            <div class="roi-breakdown">
+              <div class="roi-break-item">
+                <small>Alertes Chute de Ponte :</small>
+                <b id="roi-gain-ponte">+115 000 FCFA</b>
+              </div>
+              <div class="roi-break-item">
+                <small>Aliment Économisé (10g/j) :</small>
+                <b id="roi-gain-aliment">+70 000 FCFA</b>
+              </div>
+              <div class="roi-break-item">
+                <small>Impayés Recouvrés WhatsApp :</small>
+                <b id="roi-gain-creances">+60 000 FCFA</b>
+              </div>
+              <div class="roi-break-item">
+                <small>Coût de l'Abonnement Pro :</small>
+                <b style="color:#ffd700">6 500 FCFA (10 $)</b>
+              </div>
+            </div>
+
+            <button class="saas-btn-gold" style="width:100%;margin-top:20px;justify-content:center" data-action="open-subscription-modal">
+              🚀 Activer mon Plan Pro pour 10 $/mois
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Section (Freemium & 10$/mois) -->
+      <section id="saas-pricing" style="margin-bottom:50px">
+        <div class="saas-sec-head">
+          <span class="saas-sec-tag">Tarifs Clairs &amp; Sans Surprise</span>
+          <h2>Une Formule Gratuite pour Démarrer, une Formule Pro pour Rentabiliser</h2>
+          <p>
+            Commencez 100 % gratuitement, puis passez à la vitesse supérieure pour seulement <b>10 $/mois (6 500 FCFA)</b>.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Plan Découverte (Freemium) -->
+          <div class="price-card">
+            <div class="price-plan-name">Plan Découverte</div>
+            <div class="price-plan-desc">Idéal pour démarrer un premier petit bâtiment de ponte en toute simplicité.</div>
+            
+            <div class="price-amount-box">
+              <span class="price-val">0</span>
+              <span class="price-curr">$</span>
+              <span class="price-period">/ Gratuit à vie</span>
+              <span class="price-cfa-hint">0 Franc CFA · Aucune carte requise</span>
+            </div>
+
+            <ul class="price-features">
+              <li><span class="price-check">✓</span> 1 Bâtiment d'élevage de ponte</li>
+              <li><span class="price-check">✓</span> Jusqu'à 500 poules suivies</li>
+              <li><span class="price-check">✓</span> Saisie journalière de la ponte</li>
+              <li><span class="price-check">✓</span> Calculs automatiques des taux</li>
+              <li><span class="price-check">✓</span> Factures &amp; Reçus format standard</li>
+              <li><span class="price-check">✓</span> Fonctionnement 100 % Hors-Ligne</li>
+              <li class="disabled"><span>✕</span> Assistant vocal Frère Célestin</li>
+              <li class="disabled"><span>✕</span> Tickets de caisse thermiques 80 mm</li>
+              <li class="disabled"><span>✕</span> Saisie Photo décalquée assistée</li>
+            </ul>
+
+            <button class="price-btn ghost" data-action="launch-free-plan">
+              Lancer mon Élevage Gratuit
+            </button>
+          </div>
+
+          <!-- Plan Éleveur Pro (10$/mois) -->
+          <div class="price-card featured">
+            <div class="price-ribbon">⭐ Le Plus Populaire</div>
+            <div class="price-plan-name" style="color:var(--sage)">Éleveur Pro</div>
+            <div class="price-plan-desc">La suite complète pour maximiser vos bénéfices et sécuriser chaque vente.</div>
+            
+            <div class="price-amount-box">
+              <span class="price-val">10</span>
+              <span class="price-curr">$</span>
+              <span class="price-period">/ mois</span>
+              <span class="price-cfa-hint">Soit 6 500 FCFA / mois (ou 60 000 FCFA / an avec 2 mois offerts)</span>
+            </div>
+
+            <ul class="price-features">
+              <li><span class="price-check">✓</span> <b>Bâtiments illimités</b> (A, B, C, D, G...)</li>
+              <li><span class="price-check">✓</span> Jusqu'à <b>50 000 poules</b> prises en charge</li>
+              <li><span class="price-check">✓</span> <b>Assistant Vocal Frère Célestin</b> en direct</li>
+              <li><span class="price-check">✓</span> <b>Tickets 80 mm Bluetooth &amp; Facturier A4</b></li>
+              <li><span class="price-check">✓</span> <b>Partage WhatsApp 1-clic</b> avec vos clients</li>
+              <li><span class="price-check">✓</span> <b>Saisie Photo Décalquée</b> de vos fiches papier</li>
+              <li><span class="price-check">✓</span> <b>Comparaison Standard ISA Brown</b> officielle</li>
+              <li><span class="price-check">✓</span> CRM contacts &amp; synchronisation répertoire</li>
+              <li><span class="price-check">✓</span> Sauvegardes locales &amp; restauration instantanée</li>
+            </ul>
+
+            <button class="price-btn gold" data-action="open-subscription-modal">
+              ${isPro ? "⭐ Votre Plan Pro est Actif" : "Passer à l'Éleveur Pro (10 $/mois)"}
+            </button>
+          </div>
+
+          <!-- Plan Coopérative & Agro-Industrie -->
+          <div class="price-card">
+            <div class="price-plan-name">Coopérative &amp; Ferme</div>
+            <div class="price-plan-desc">Pour les couvoirs, provendiers et groupements gérant plusieurs sites.</div>
+            
+            <div class="price-amount-box">
+              <span class="price-val">35</span>
+              <span class="price-curr">$</span>
+              <span class="price-period">/ mois</span>
+              <span class="price-cfa-hint">Soit environ 22 500 FCFA / mois</span>
+            </div>
+
+            <ul class="price-features">
+              <li><span class="price-check">✓</span> <b>Toutes les fonctionnalités Pro</b> incluses</li>
+              <li><span class="price-check">✓</span> Multi-fermes &amp; multi-sites géographiques</li>
+              <li><span class="price-check">✓</span> Rôles d'accès (Gérant, Vétérinaire, Ouvrier)</li>
+              <li><span class="price-check">✓</span> Agrégation des données de ponte globales</li>
+              <li><span class="price-check">✓</span> Intégration comptable &amp; rapports certifiés</li>
+              <li><span class="price-check">✓</span> Assistance zootechnique prioritaire 7j/7</li>
+            </ul>
+
+            <button class="price-btn primary" data-action="contact-sales-modal">
+              Contacter un Conseiller
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Security & Data Isolation Notice -->
+      <section id="saas-security" class="privacy-banner">
+        <div class="privacy-icon">🛡️</div>
+        <div>
+          <h3 style="margin:0 0 6px 0;font-size:16px;color:var(--sage)">
+            Vos Données d'Élevage Sont 100 % Confidentielles et Isolées
+          </h3>
+          <p style="margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.55">
+            <b>Votre question légitime :</b> <i>« Si quelqu'un a le lien, peut-il voir mes chiffres ou les modifier ? »</i><br>
+            <b>La réponse technique :</b> <b>Non !</b> Grâce à l'architecture <i>Local-First</i>, chaque visiteur possède son propre espace de stockage étanche dans son navigateur. Les données saisies sur votre appareil ne sont jamais écrasées par un tiers. Pour une sécurité renforcée, vous pouvez activer un <b>code PIN de verrouillage</b> dans vos Paramètres.
+          </p>
+        </div>
+      </section>
+
+      <!-- Real Monastery Testimonial -->
+      <div class="monastery-block">
+        <div class="monastery-badge">Témoignage d'Élevage Modèle</div>
+        <div style="flex:1">
+          <h3 style="margin:0 0 6px 0;font-family:Georgia,serif;font-size:18px">L'Exemple du Monastère Sainte-Marie de Bouaké</h3>
+          <p style="margin:0;font-size:13.5px;color:#555;line-height:1.5">
+            <i>« Avec plus de 16 000 poules pondeuses réparties sur nos bâtiments et une rigueur quotidienne, cette solution nous a permis de stopper le coulage, de sécuriser la caisse des œufs et d'automatiser toutes nos factures sans dépendre du réseau internet. C'est l'outil que chaque éleveur africain attendait. »</i>
+          </p>
+        </div>
       </div>
 
-      <div class="pillar-card">
-        <div class="pillar-icon">💰</div>
-        <h3>Coût de Revient Réel & Marge Brute</h3>
-        <p>
-          Connaissez votre coût de revient exact par œuf et par plateau de 30 en FCFA. Fixez vos prix en toute sécurité pour garantir la rentabilité de chaque bande.
-        </p>
-      </div>
+      <!-- FAQ Section -->
+      <section id="saas-faq" style="margin-bottom:50px">
+        <div class="saas-sec-head">
+          <span class="saas-sec-tag">Questions Fréquentes</span>
+          <h2>Tout Ce Que Vous Devez Savoir Avant de Commencer</h2>
+        </div>
 
-      <div class="pillar-card">
-        <div class="pillar-icon">🧾</div>
-        <h3>Facturation & Partage WhatsApp</h3>
-        <p>
-          Émettez des factures professionnelles, reçus de caisse (format A4 ou ticket thermique 80mm) et envoyez-les en un clic sur le WhatsApp de vos clients grossistes.
-        </p>
-      </div>
+        <div class="faq-grid">
+          <div class="faq-card">
+            <h4>📡 L'application fonctionne-t-elle sans internet ?</h4>
+            <p>Oui, à 100 % ! Une fois installée sur votre téléphone ou PC, vous pouvez saisir vos données au poulailler sans Wi-Fi ni données mobiles. L'application ne vous demandera jamais d'unités.</p>
+          </div>
 
-      <div class="pillar-card">
-        <div class="pillar-icon">📷</div>
-        <h3>Décalque Photo Sans Saisie Pénible</h3>
-        <p>
-          Prenez en photo votre cahier d'élevage papier : notre visionneuse intégrée vous permet de lire et transcrire vos colonnes sans aller-retour et en moins de 60 secondes par semaine.
-        </p>
-      </div>
+          <div class="faq-card">
+            <h4>💳 Comment régler l'abonnement Pro de 10 $/mois ?</h4>
+            <p>Le paiement s'effectue en toute simplicité en Francs CFA (6 500 FCFA/mois ou 60 000 FCFA/an) par <b>Wave, Orange Money, MTN MoMo, Moov Money</b> ou carte bancaire.</p>
+          </div>
 
-      <div class="pillar-card">
-        <div class="pillar-icon">📱</div>
-        <h3>Installable sur Smartphone (PWA)</h3>
-        <p>
-          Installez l'application directement sur l'écran d'accueil de votre téléphone comme une véritable application native Android ou iOS, sans passer par un magasin d'applications.
-        </p>
-      </div>
-    </div>
+          <div class="faq-card">
+            <h4>🖨️ Puis-je utiliser une imprimante de poche Bluetooth ?</h4>
+            <p>Absolument ! Notre module de facturation intègre un mode <b>Ticket Thermique 80 mm</b> parfait pour les petites imprimantes portables utilisées au comptoir ou en tournée de livraison.</p>
+          </div>
 
-    <div class="monastery-block">
-      <div class="monastery-badge">Témoignage de Terrain</div>
-      <div style="flex:1">
-        <h3 style="margin:0 0 6px 0;font-family:Georgia,serif;font-size:18px">L'Élevage Modèle du Monastère Sainte-Marie de Bouaké</h3>
-        <p style="margin:0;font-size:13.5px;color:#555;line-height:1.5">
-          <i>« Avec plus de 16 000 sujets répartis sur nos bâtiments et une rigueur bénédictine quotidienne, cette solution nous permet de tenir une traçabilité exemplaire pour chaque ponte, de sécuriser nos stocks et de suivre nos ventes sans jamais dépendre des aléas d'internet. »</i>
-        </p>
-      </div>
-    </div>
+          <div class="faq-card">
+            <h4>🔒 Mes données risquent-elles d'être modifiées par autrui ?</h4>
+            <p>Non. Les données de votre exploitation sont stockées localement sur votre téléphone ou ordinateur. Vous pouvez également verrouiller l'accès avec un code PIN à 4 chiffres.</p>
+          </div>
+        </div>
+      </section>
 
-    <div class="card" style="text-align:center;padding:40px 20px;background:var(--sand)">
-      <h2 style="font-family:Georgia,serif;margin:0 0 10px 0;color:var(--sage)">Prêt pour une Gestion Sereine de votre Élevage ?</h2>
-      <p style="max-width:600px;margin:0 auto 20px auto;font-size:14px;color:var(--ink-soft)">
-        Que vous gériez un seul bâtiment ou une ferme de plusieurs dizaines de milliers de poules, notre plateforme est taillée pour votre réalité.
-      </p>
-      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" data-action="goto" data-view="dashboard" style="font-size:15px;padding:12px 28px">
-          🚀 Commencer l'Exploitation
-        </button>
-        <button class="btn btn-ghost" data-action="pwa-install-prompt" style="font-size:15px;padding:12px 24px">
-          📲 Installer l'application sur mon appareil
-        </button>
+      <!-- Bottom Call To Action -->
+      <div class="card" style="text-align:center;padding:45px 20px;background:var(--sand);border-radius:18px">
+        <h2 style="font-family:Georgia,serif;margin:0 0 10px 0;color:var(--sage);font-size:26px">
+          Prêt à Rentabiliser Votre Élevage de Pondeuses ?
+        </h2>
+        <p style="max-width:620px;margin:0 auto 24px auto;font-size:14.5px;color:var(--ink-soft);line-height:1.6">
+          Rejoignez les éleveurs modernes qui pilotent leur cheptel avec rigueur, sérénité et professionnalisme.
+        </p>
+        <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
+          <button class="saas-btn-gold" data-action="goto" data-view="dashboard">
+            🚀 Accéder à l'Exploitation (Démo Gratuite)
+          </button>
+          <button class="saas-btn-outline" style="background:var(--sage);border-color:var(--sage)" data-action="open-subscription-modal">
+            ⭐ Passer à l'Éleveur Pro (10 $/mois)
+          </button>
+        </div>
       </div>
     </div>
   `;
 }
 
+// --- SAAS HELPERS (ROI CALCULATOR & SUBSCRIPTION MODALS) ---
+function updateRoiCalc(henCount) {
+  const n = Math.max(300, Math.min(30000, Number(henCount) || 3000));
+  const sliderVal = document.getElementById("roi-hen-count");
+  if (sliderVal) sliderVal.textContent = n.toLocaleString();
+
+  // 1. Egg production (average 80% lay rate)
+  const eggsMonth = Math.round(n * 0.80 * 30);
+  const traysMonth = Math.round(eggsMonth / 30);
+  const turnoverMonth = traysMonth * 2400; // 2400 FCFA / plateau 30
+
+  // 2. Savings on lay drop & mortality prevention (~3.2%)
+  const gainPonte = Math.round(turnoverMonth * 0.032);
+
+  // 3. Feed optimization (10g / poule / jour saved at 260 FCFA/kg)
+  const gainAliment = Math.round(n * 0.010 * 30 * 260);
+
+  // 4. Client debt recovered faster via WhatsApp
+  const gainRecouvrement = Math.round(Math.min(150000, 30000 + n * 20));
+
+  const totalGain = gainPonte + gainAliment + gainRecouvrement;
+  const subCost = 6500; // 10 $ = ~6 500 FCFA
+  const netProfit = totalGain - subCost;
+  const roiRatio = Math.max(1, Math.round(totalGain / subCost));
+
+  const elTotal = document.getElementById("roi-gain-total");
+  if (elTotal) elTotal.textContent = "+" + totalGain.toLocaleString() + " FCFA / mois";
+
+  const elRatio = document.getElementById("roi-gain-ratio");
+  if (elRatio) elRatio.textContent = roiRatio + "× votre abonnement rentabilisé";
+
+  const elPonte = document.getElementById("roi-gain-ponte");
+  if (elPonte) elPonte.textContent = "+" + gainPonte.toLocaleString() + " FCFA";
+
+  const elAliment = document.getElementById("roi-gain-aliment");
+  if (elAliment) elAliment.textContent = "+" + gainAliment.toLocaleString() + " FCFA";
+
+  const elCreance = document.getElementById("roi-gain-creances");
+  if (elCreance) elCreance.textContent = "+" + gainRecouvrement.toLocaleString() + " FCFA";
+}
+
+function selectPayMethod(el, method) {
+  const btns = document.querySelectorAll(".pay-method-btn");
+  btns.forEach(b => b.classList.remove("selected"));
+  if (el) el.classList.add("selected");
+  ui.selectedPayMethod = method;
+}
+
+function openSubscriptionModal(plan) {
+  const isPro = plan === "pro";
+  const innerHtml = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:24px">⭐</span>
+        <h3 style="margin:0;font-size:16px">${isPro ? "Activer l'Abonnement Éleveur Pro" : "Abonnement Avicola SaaS"}</h3>
+      </div>
+      <button class="btn btn-ghost" data-action="close-modal" style="padding:4px 8px">✕</button>
+    </div>
+
+    <div style="background:#fcfaf5;border:1px solid #e5dcbe;border-radius:12px;padding:16px;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px">
+        <b style="font-size:15px;color:var(--sage)">Formule Éleveur Pro (10 $/mois)</b>
+        <span style="font-size:18px;font-weight:800;color:var(--sage)">6 500 FCFA <small style="font-size:12px;font-weight:normal;color:var(--ink-soft)">/ mois</small></span>
+      </div>
+      <p style="margin:6px 0 0 0;font-size:12.5px;color:var(--ink-soft);line-height:1.45">
+        Bâtiments illimités, Assistant Vocal Frère Célestin illimité, Tickets thermiques 80 mm, Factures A4, Relances WhatsApp &amp; CRM complet.
+      </p>
+    </div>
+
+    <label style="font-size:12px;font-weight:700;display:block;margin-bottom:8px">Mode de paiement sécurisé :</label>
+    <div class="pay-methods-grid" id="checkout-methods">
+      <div class="pay-method-btn selected" onclick="selectPayMethod(this, 'wave')">
+        🌊 Wave
+      </div>
+      <div class="pay-method-btn" onclick="selectPayMethod(this, 'orange')">
+        🟠 Orange Money
+      </div>
+      <div class="pay-method-btn" onclick="selectPayMethod(this, 'mtn')">
+        🟡 MTN MoMo
+      </div>
+      <div class="pay-method-btn" onclick="selectPayMethod(this, 'moov')">
+        🟢 Moov Money
+      </div>
+      <div class="pay-method-btn" onclick="selectPayMethod(this, 'card')">
+        💳 Carte Bancaire
+      </div>
+      <div class="pay-method-btn" onclick="selectPayMethod(this, 'test')">
+        ⚡ Essai Gratuit Pro
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Numéro Mobile Money pour confirmation :</label>
+      <input type="tel" id="checkout-phone" class="form-input" placeholder="+225 07 00 00 00 00" value="+225 ">
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--border);padding-top:14px">
+      <button class="btn btn-ghost" data-action="close-modal">Annuler</button>
+      <button class="btn btn-primary" data-action="confirm-subscription" style="background:#d4af37;color:#153822;font-weight:700">
+        ✅ Activer l'Abonnement Pro (10 $/mois)
+      </button>
+    </div>
+  `;
+  openModal(innerHtml, false);
+}
+
+function openFarmSwitcherModal() {
+  const currentFarm = state.currentFarm || "monastere";
+  const innerHtml = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px">
+      <h3 style="margin:0;font-size:16px">Espaces d'Élevage &amp; Isolation des Données</h3>
+      <button class="btn btn-ghost" data-action="close-modal" style="padding:4px 8px">✕</button>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:16px;line-height:1.5">
+      Chaque espace est strictement étanche et isolé sur votre appareil. Les visiteurs extérieurs ne peuvent ni voir vos comptes privés ni les modifier.
+    </p>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+      <div style="border:1px solid ${currentFarm==='monastere'?'var(--sage)':'var(--border)'};background:${currentFarm==='monastere'?'rgba(30,86,49,0.06)':'#fff'};border-radius:12px;padding:14px;cursor:pointer" data-action="switch-farm" data-farm="monastere">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <b style="font-size:14px;color:var(--sage)">🏛️ Monastère Ste-Marie (Démo Officielle ISA Brown)</b>
+          ${currentFarm==='monastere'?'<span style="font-size:11px;background:var(--sage);color:#fff;padding:2px 8px;border-radius:10px">Actif</span>':''}
+        </div>
+        <small style="color:var(--ink-soft);display:block;margin-top:4px">16 000 pondeuses de référence, Bâtiment G, fiches certifiées semaines 21 à 28.</small>
+      </div>
+
+      <div style="border:1px solid ${currentFarm==='custom'?'var(--sage)':'var(--border)'};background:${currentFarm==='custom'?'rgba(30,86,49,0.06)':'#fff'};border-radius:12px;padding:14px;cursor:pointer" data-action="switch-farm" data-farm="custom">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <b style="font-size:14px;color:var(--ink)">🚜 Mon Élevage Privé (${state.customFarmName || "Ma Ferme"})</b>
+          ${currentFarm==='custom'?'<span style="font-size:11px;background:var(--sage);color:#fff;padding:2px 8px;border-radius:10px">Actif</span>':''}
+        </div>
+        <small style="color:var(--ink-soft);display:block;margin-top:4px">Votre espace confidentiel pour vos propres bandes, dépenses et clients.</small>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:space-between;align-items:center">
+      <button class="btn btn-ghost" data-action="goto" data-view="params">⚙️ Paramètres &amp; Code PIN</button>
+      <button class="btn btn-primary" data-action="close-modal">Fermer</button>
+    </div>
+  `;
+  openModal(innerHtml, false);
+}
 
 function handleUpgradeActions(btn, act, e) {
   if (act === "sale-to-invoice") {
@@ -6994,6 +7860,69 @@ function handleUpgradeActions(btn, act, e) {
   // --- MOBILE MENU DRAWER ---
   if (act === "open-mobile-menu") {
     openMobileMenuModal();
+    return true;
+  }
+
+  // --- SAAS SUBSCRIPTION & WORKSPACE ACTIONS ---
+  if (act === "open-subscription-modal") {
+    openSubscriptionModal(btn.dataset.plan || "pro");
+    return true;
+  }
+
+  if (act === "launch-free-plan") {
+    state.subscriptionPlan = "free";
+    save();
+    closeModal();
+    setView("dashboard");
+    toast("✨ Plan Découverte activé ! Bienvenue dans votre élevage.");
+    return true;
+  }
+
+  if (act === "contact-sales-modal") {
+    const innerHtml = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px">
+        <h3 style="margin:0;font-size:16px">Offre Coopérative & Agro-Industrie</h3>
+        <button class="btn btn-ghost" data-action="close-modal" style="padding:4px 8px">✕</button>
+      </div>
+      <p style="font-size:13.5px;color:var(--ink);line-height:1.5">
+        Vous gérez plusieurs sites avicoles, un couvoir ou une provenderie ? Notre équipe zootechnique et informatique vous accompagne avec un déploiement sur mesure.
+      </p>
+      <div style="background:#f6f8f6;border:1px solid #d8e5dc;border-radius:12px;padding:16px;margin:16px 0">
+        <p style="margin:0 0 8px 0;font-size:13px"><b>WhatsApp Direct :</b> <a href="https://wa.me/2250700000000?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20l%27offre%20Avicola%20SaaS%20Coop%C3%A9rative" target="_blank" style="color:var(--sage);font-weight:700">+225 07 00 00 00 00</a></p>
+        <p style="margin:0;font-size:13px"><b>Email Partenariats :</b> contact@avicolasaas.com</p>
+      </div>
+      <div style="text-align:right">
+        <button class="btn btn-primary" data-action="close-modal">Fermer</button>
+      </div>
+    `;
+    openModal(innerHtml, false);
+    return true;
+  }
+
+  if (act === "confirm-subscription") {
+    state.isPro = true;
+    state.subscriptionPlan = "pro";
+    save();
+    closeModal();
+    toast("⭐ Félicitations ! Votre Plan Éleveur Pro (10 $/mois) est activé avec succès.");
+    renderLanding();
+    render();
+    return true;
+  }
+
+  if (act === "open-farm-switcher") {
+    openFarmSwitcherModal();
+    return true;
+  }
+
+  if (act === "switch-farm") {
+    const targetFarm = btn.dataset.farm;
+    state.currentFarm = targetFarm;
+    save();
+    closeModal();
+    toast(targetFarm === "monastere" ? "🏛️ Basculé sur l'Élevage Démo du Monastère Sainte-Marie." : "🚜 Basculé sur votre Espace d'Élevage Privé.");
+    renderLanding();
+    render();
     return true;
   }
 
