@@ -69,21 +69,31 @@ Avicola SaaS propose un modèle adapté aux réalités des éleveurs ouest-afric
 - **Bascule d'Espace (Multi-Tenancy) :**
   - **🏛️ Démo Certifiée Sainte-Marie :** Données de référence ISA Brown du Bâtiment G (16 000 pondeuses).
   - **🚜 Élevage Privé :** Espace indépendant pour votre propre exploitation.
-- **Verrouillage par Code PIN :** Possibilité de configurer un code à 4 chiffres dans les Paramètres pour bloquer l'accès aux personnes non autorisées manipulant le téléphone de l'exploitation.
+- **Sauvegarde & restauration :** Export/import complet en `.json` depuis **Paramètres → Sauvegarde** (à conserver sur clé USB, par Bluetooth ou WhatsApp). Un rappel indique l'âge de la dernière sauvegarde.
 
 ---
 
 ## 🚀 Déploiement
 
-Ce projet est un site statique sans build complexe requis :
-- **Fichier d'entrée :** `index.html` (ou `Poulailler-Ste-Marie.html`)
-- **Configuration :** `vercel.json` inclus
+Ce projet est un site statique, **sans build ni dépendance** :
+- **Fichier d'entrée :** `index.html` (unique source de l'application)
+- **PWA :** `manifest.json` + `sw.js` (cache *network-first* : chaque visite en ligne récupère la dernière version)
+- **Configuration :** `vercel.json` (URL propres, en-têtes de cache et de sécurité)
 - **Framework Preset :** Other / Static
 
 ```bash
+# Vérification locale (aucune dépendance requise)
+node scripts/check-app.mjs
+
 # Déploiement via le CLI Vercel
 vercel --prod
 ```
+
+### Règles de déploiement Vercel
+- **Un seul projet Vercel doit être branché sur ce dépôt** : `suivi-vente-des-oeufs-poulailler` → `suivi-vente-des-oeufs-poulailler-omega.vercel.app`.
+- L'ancien projet `suivi-poulailler` (dépôt `suivi-poulailler`, juillet 2026) est obsolète : le supprimer du dashboard Vercel évite de croire à « deux déploiements ».
+- Chaque `git push` sur `main` déclenche **un** déploiement de production : regrouper les commits avant de pousser limite le bruit dans l'historique.
+- Activer *Settings → Git → Preview Deployments* si vous voulez une URL de test par branche/PR.
 
 ## 📄 Licence
 Tous droits réservés — Monastère Bénédictin Sainte-Marie de Bouaké.

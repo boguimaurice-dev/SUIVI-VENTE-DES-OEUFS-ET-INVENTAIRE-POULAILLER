@@ -2,15 +2,25 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1e5631">
+  <meta name="color-scheme" content="light">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Poulailler Ste-Marie">
   <meta name="description" content="Application complète de gestion d'élevage avicole de ponte, suivi de cheptel, facturation et stock d'œufs">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Poulailler Sainte-Marie">
+  <meta property="og:title" content="Poulailler Ste Marie — Inventaire &amp; œufs">
+  <meta property="og:description" content="Suivi de ponte, cheptel, caisse et facturation pour élevage avicole — 100% hors-ligne.">
+  <meta property="og:image" content="icon-512.png">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
   <title>Poulailler Ste Marie — Inventaire &amp; œufs</title>
   <style>
 :root {
@@ -68,6 +78,9 @@ img { max-width: 100%; }
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -145,6 +158,18 @@ img { max-width: 100%; }
 
 .view { display: none; }
 .view.active { display: block; animation: rise 0.28s ease; }
+
+/* Accessibilité : navigation clavier visible */
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+.skip-link {
+  position: absolute; left: -9999px; top: 8px; z-index: 9999;
+  background: var(--green-deep); color: #fff; padding: 10px 16px;
+  border-radius: 10px; font-weight: 700; text-decoration: none;
+}
+.skip-link:focus { left: 12px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
 @keyframes rise {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: none; }
@@ -2443,7 +2468,8 @@ table.data .warn td, table.data td.warn { color: var(--terra); font-weight: 700;
         Fichier unique — fonctionne hors connexion.
       </div>
     </aside>
-    <main class="main">
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+    <main class="main" id="main-content" tabindex="-1">
     <div class="mobile-top-bar no-print">
       <div style="display:flex;align-items:center;gap:8px">
         <div class="brand-mark" style="width:28px;height:28px"></div>
@@ -2628,6 +2654,32 @@ function esc(s) {
   return String(s ?? "").replace(/[&<>"'`]/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;", "`": "&#96;",
   }[c]));
+}
+
+// --- Téléphone / WhatsApp ------------------------------------------------
+// Format international pour wa.me (Côte d'Ivoire par défaut : 10 chiffres commençant par 0).
+function waNumber(phone, defaultCountry = "225") {
+  let digits = String(phone || "").replace(/[^0-9]/g, "");
+  if (!digits) return "";
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  if (digits.length === 10 && digits.startsWith("0")) return defaultCountry + digits;
+  return digits;
+}
+// Lien tel: sûr (pas de HTML injecté, pas de double +225).
+function telHref(phone) {
+  const raw = String(phone || "").trim();
+  if (!raw) return "";
+  return "tel:" + raw.replace(/[^0-9+]/g, "");
+}
+// Lien WhatsApp générique (sans destinataire imposé) avec message pré-rempli.
+function waLink(message, phone) {
+  const num = waNumber(phone || "");
+  return "https://wa.me/" + (num ? num + "?" : "?") + "text=" + encodeURIComponent(message || "");
+}
+// Le premier numéro d'une chaîne du type "08 00 28 43 / 59 45 50 99".
+function firstPhone(phone) {
+  const part = String(phone || "").split(/[\/,;|]/)[0].trim();
+  return part || "";
 }
 const KIND_L = { oeufs: "Œufs (plateaux)", poule: "Poules", coq: "Coqs", autre: "Autre" };
 const PAY_L = { especes: "Espèces", credit: "Crédit", cuisine: "Cuisine", liberal: "Libéralité", aumone: "Aumône" };
@@ -2965,9 +3017,10 @@ function migrate(data) {
   data.contacts = (data.contacts && data.contacts.length > 0) ? data.contacts : DEFAULT_CONTACTS;
   data.invoices = (data.invoices && data.invoices.length > 0) ? data.invoices : DEFAULT_INVOICES;
   if (!settings.priceSchemeV2) {
-    settings.prixCuisine = 2000;
-    settings.prixAumone = 1200;
-    settings.prixLiberal = 1700;
+    // Migration unique depuis l'ancienne grille (valeurs historiques conservées si déjà personnalisées).
+    settings.prixCuisine = settings.prixCuisine || 2000;
+    settings.prixAumone = settings.prixAumone || 1200;
+    settings.prixLiberal = settings.prixLiberal || 1700;
     settings.prixCreditPlateau = settings.prixCreditPlateau || 2267;
     settings.priceSchemeV2 = true;
   }
@@ -3060,7 +3113,24 @@ let ui = {
   cheptelChartMode: "ponte"
 };
 
-function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+function save() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+    save.lastError = null;
+    return true;
+  } catch (err) {
+    // Quota dépassé ou navigation privée : on prévient l'utilisateur au lieu de perdre les données en silence.
+    save.lastError = err;
+    const quota = err && (err.name === "QuotaExceededError" || err.name === "NS_ERROR_DOM_QUOTA_REACHED");
+    const msg = quota
+      ? "⚠️ Stockage plein : exportez une sauvegarde JSON puis supprimez d'anciennes photos/fiches."
+      : "⚠️ Sauvegarde locale impossible (navigation privée ?). Exportez une sauvegarde JSON.";
+    if (typeof toast === "function") toast(msg);
+    return false;
+  }
+}
+// Alias défensif : certains écrans récents appellent saveNow().
+function saveNow() { return save(); }
 
 function emptyDay() {
   return { stockInitial: null, entree: 0, vente: 0, cuisine: 0, aumone: 0, liberalite: 0, tournee: 0, nonComm: 0, venteMontant: 0 };
@@ -3157,8 +3227,20 @@ function setView(v) {
   document.querySelectorAll(".nav-btn").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
   document.querySelectorAll(".mobile-nav-btn").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
   document.querySelectorAll(".view").forEach((s) => s.classList.toggle("active", s.id === "view-" + v));
+  // L'URL reflète l'écran courant : rechargement / favori / partage conservent la page.
+  try {
+    const hash = "#/" + v;
+    if (window.location.hash !== hash) history.replaceState(null, "", hash);
+  } catch (err) {}
   window.scrollTo({ top: 0, behavior: "smooth" });
   render();
+}
+
+function viewFromHash() {
+  const m = /^#\/?([a-z-]+)/i.exec(window.location.hash || "");
+  const known = ["dashboard", "saisie", "fiche", "ventes", "credits", "facturation", "contacts",
+    "cheptel", "stock", "aliment", "inventaire", "params", "admin", "landing"];
+  return m && known.includes(m[1].toLowerCase()) ? m[1].toLowerCase() : null;
 }
 
 function henSvg() {
@@ -4986,6 +5068,14 @@ function renderParams() {
   const ents = state.entities || [];
   document.getElementById("view-params").innerHTML = `
     <div class="topbar"><div><h2>Paramètres</h2><p class="lede">Noms des entités, tarifs des plateaux, sauvegarde</p></div></div>
+
+    <div class="pwa-banner" id="pwa-install-banner-settings" style="display:none">
+      <div class="pwa-banner-text">
+        <h4>📱 Installer l'application sur cet appareil</h4>
+        <p>Icône sur l'écran d'accueil, plein écran et fonctionnement 100% hors-ligne.</p>
+      </div>
+      <button class="pwa-install-btn" data-action="pwa-install-prompt">Installer l'App</button>
+    </div>
     <div class="card"><h3>Identité</h3>
       <div class="form-grid">
         <div class="field span-2"><label>Nom</label><input id="p-name" value="${esc(s.orgName)}"></div>
@@ -5013,6 +5103,7 @@ function renderParams() {
       <div class="btn-row"><button class="btn btn-primary" data-action="save-params">Enregistrer</button></div>
     </div>
     <div class="card"><h3>Sauvegarde</h3>
+      <p class="help" id="backup-health" style="margin:0 0 10px"></p>
       <div class="btn-row">
         <button class="btn btn-gold" data-action="export">Exporter JSON</button>
         <label class="btn btn-ghost">Importer JSON<input type="file" id="import-json" accept="application/json" hidden></label>
@@ -5031,6 +5122,24 @@ function renderParams() {
     };
     reader.readAsText(file);
   });
+
+  // Rappel de sauvegarde : informe de l'âge de la dernière copie JSON.
+  const health = document.getElementById("backup-health");
+  if (health) {
+    let last = null;
+    try { last = localStorage.getItem("last-backup-at"); } catch (e) {}
+    const days = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null;
+    if (days === null) {
+      health.textContent = "⚠️ Aucune sauvegarde téléchargée : les données ne vivent que dans ce navigateur. Faites une copie JSON dès maintenant.";
+      health.style.color = "var(--warn)";
+    } else if (days >= 15) {
+      health.textContent = `⚠️ Dernière sauvegarde il y a ${days} jours. Pensez à en refaire une.`;
+      health.style.color = "var(--warn)";
+    } else {
+      health.textContent = `✅ Dernière sauvegarde : ${days <= 0 ? "aujourd'hui" : "il y a " + days + " jour(s)"}.`;
+      health.style.color = "var(--ok)";
+    }
+  }
 }
 
 function openModal(html, wide) {
@@ -5040,9 +5149,18 @@ function openModal(html, wide) {
 }
 function closeModal() {
   const bg = document.getElementById("modal");
+  if (!bg) return;
   bg.classList.remove("open");
   bg.innerHTML = "";
 }
+
+// Toute touche Échap ferme la modale ouverte (confort mobile/desktop).
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const bg = document.getElementById("modal");
+    if (bg && bg.classList.contains("open")) closeModal();
+  }
+});
 
 function flockForm(f) {
   const v = f || { building: "", breed: "ISA Brown", category: "pondeuse", startDate: todayStr(), count: 0, notes: "" };
@@ -5487,7 +5605,7 @@ function renderAdminTextTab() {
         <div>
           <h3 style="margin:0 0 4px">Importation de Texte, Markdown ou CSV</h3>
           <p style="margin:0;font-size:13px;color:var(--ink-soft);max-width:750px">
-            Collez ci-dessous vos données transcrites (tableaux Markdown comme dans <code>suivi poulailler aout- oct.md</code>, format CSV Excel, ou blocs de texte simples).
+            Collez ci-dessous vos données transcrites (tableaux Markdown, format CSV Excel, ou blocs de texte simples).
             Vous pouvez également charger directement un fichier depuis votre téléphone ou votre ordinateur.
           </p>
         </div>
@@ -5497,7 +5615,7 @@ function renderAdminTextTab() {
             📂 Charger un fichier (.md, .csv, .txt)
           </button>
           <button class="btn btn-ghost" data-action="admin-load-example">
-            ✨ Charger le modèle Bâtiment A & B
+            ✨ Charger un modèle d'exemple (Bâtiment A)
           </button>
         </div>
       </div>
@@ -6076,11 +6194,17 @@ function numToWordsFr(n) {
       const t = Math.floor(num / 10);
       const u = num % 10;
       if (t === 7) {
-        str += "Soixante-" + (u === 1 ? "et-Onze" : units[10 + u]) + " ";
+        // 71 = Soixante et Onze · 72-79 = Soixante-Douze … (pas de « et » après 71)
+        str += "Soixante" + (u === 1 ? " et Onze" : "-" + units[10 + u]) + " ";
       } else if (t === 9) {
+        // 91 = Quatre-Vingt-Onze · pas de « et » (règle orthographique française)
         str += "Quatre-Vingt-" + units[10 + u] + " ";
+      } else if (t === 8) {
+        // 80 = Quatre-Vingts · 81 = Quatre-Vingt et Un (le « s » disparaît) · 82+ avec tiret
+        str += "Quatre-Vingt" + (u === 0 ? "s" : (u === 1 ? " et Un" : "-" + units[u])) + " ";
       } else {
-        str += tens[t] + (u === 1 ? "-et-Un" : (u > 0 ? "-" + units[u] : (t === 8 ? "s" : ""))) + " ";
+        // 21/31/41/51/61 = « et Un » avec espaces ; le reste avec tiret
+        str += tens[t] + (u === 1 ? " et Un" : (u > 0 ? "-" + units[u] : "")) + " ";
       }
     } else if (num > 0) {
       str += units[num] + " ";
@@ -6101,13 +6225,16 @@ function numToWordsFr(n) {
   }
   if (n >= 1000) {
     const thousands = Math.floor(n / 1000);
+    // « Mille » est invariable et jamais précédé de « Un ».
     res += (thousands > 1 ? convertBelow1000(thousands) + " " : "") + "Mille ";
     n %= 1000;
   }
   if (n > 0) {
     res += convertBelow1000(n);
   }
-  return res.trim() + " Francs CFA";
+  // « Franc » au singulier uniquement pour 1.
+  const words = res.trim();
+  return words + (n === 1 && !/\s/.test(words) && words === "Un" ? " Franc CFA" : " Francs CFA");
 }
 
 // Helper: Parse vCard (.vcf)
@@ -6121,12 +6248,15 @@ function parseVCard(vcfText) {
     let email = "";
     let addr = "";
 
-    const lines = card.split(/\r?\n/);
+    const unfolded = card.replace(/\r?\n[ \t]/g, "");
+    const lines = unfolded.split(/\r?\n/);
     for (const line of lines) {
       const idx = line.indexOf(":");
       if (idx < 0) continue;
       const key = line.slice(0, idx).toUpperCase();
-      const val = line.slice(idx + 1).trim();
+      const val = line.slice(idx + 1).trim()
+        .replace(/\\n/gi, " ")
+        .replace(/\\([\\;,])/g, "$1");
 
       if (key.startsWith("FN")) {
         if (!name) name = val;
@@ -6164,9 +6294,23 @@ function parseVCard(vcfText) {
 // Helper: Parse Google Contacts CSV
 function parseGoogleContactsCSV(csvText) {
   const contacts = [];
+  // Gère aussi les exports au point-virgule (Excel FR) et les champs entre guillemets contenant des virgules.
+  const delimiter = (csvText.split(/\r?\n/)[0].match(/;/g) || []).length > (csvText.split(/\r?\n/)[0].match(/,/g) || []).length ? ";" : ",";
+  const splitRow = (row) => {
+    const out = [];
+    let cur = "", quoted = false;
+    for (let i = 0; i < row.length; i++) {
+      const ch = row[i];
+      if (ch === '"') { quoted = !quoted; continue; }
+      if (ch === delimiter && !quoted) { out.push(cur.trim()); cur = ""; continue; }
+      cur += ch;
+    }
+    out.push(cur.trim());
+    return out;
+  };
   const lines = csvText.split(/\r?\n/);
   if (lines.length < 2) return contacts;
-  const header = lines[0].split(",").map(h => h.trim().replace(/^"|"$/g, "").toLowerCase());
+  const header = splitRow(lines[0]).map(h => h.toLowerCase());
   const nameIdx = header.findIndex(h => h.includes("name") || h.includes("nom"));
   const phoneIdx = header.findIndex(h => h.includes("phone") || h.includes("tel"));
   const emailIdx = header.findIndex(h => h.includes("e-mail") || h.includes("email"));
@@ -6174,7 +6318,7 @@ function parseGoogleContactsCSV(csvText) {
   for (let i = 1; i < lines.length; i++) {
     const row = lines[i];
     if (!row.trim()) continue;
-    const cols = row.split(",").map(c => c.trim().replace(/^"|"$/g, ""));
+    const cols = splitRow(row);
     const name = nameIdx >= 0 ? cols[nameIdx] : cols[0];
     const phone = phoneIdx >= 0 ? cols[phoneIdx] : "";
     const email = emailIdx >= 0 ? cols[emailIdx] : "";
@@ -6196,17 +6340,18 @@ function parseGoogleContactsCSV(csvText) {
   return contacts;
 }
 
-// Helper: Export vCard (.vcf)
+// Helper: Export vCard (.vcf) — les champs sont échappés (\ , ; retours à la ligne) pour rester valides.
 function exportContactsVCard(contacts) {
+  const vesc = (v) => String(v ?? "").replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/;/g, "\\;").replace(/,/g, "\\,");
   let vcard = "";
   contacts.forEach(c => {
     vcard += "BEGIN:VCARD\r\nVERSION:3.0\r\n";
-    vcard += `FN:${c.name}\r\n`;
-    if (c.phone) vcard += `TEL;TYPE=CELL:${c.phone}\r\n`;
-    if (c.phone2) vcard += `TEL;TYPE=WORK:${c.phone2}\r\n`;
-    if (c.email) vcard += `EMAIL:${c.email}\r\n`;
-    if (c.address) vcard += `ADR;TYPE=WORK:;;${c.address};;;;\r\n`;
-    if (c.notes) vcard += `NOTE:${c.notes}\r\n`;
+    vcard += `FN:${vesc(c.name)}\r\n`;
+    if (c.phone) vcard += `TEL;TYPE=CELL:${vesc(c.phone)}\r\n`;
+    if (c.phone2) vcard += `TEL;TYPE=WORK:${vesc(c.phone2)}\r\n`;
+    if (c.email) vcard += `EMAIL;TYPE=INTERNET:${vesc(c.email)}\r\n`;
+    if (c.address) vcard += `ADR;TYPE=WORK:;;${vesc(c.address)};;;;\r\n`;
+    if (c.notes) vcard += `NOTE:${vesc(c.notes)}\r\n`;
     vcard += "END:VCARD\r\n";
   });
   return vcard;
@@ -6214,10 +6359,7 @@ function exportContactsVCard(contacts) {
 
 // Helper: Share Invoice via WhatsApp
 function shareInvoiceWhatsApp(inv) {
-  let cleanPhone = (inv.clientPhone || "").replace(/[^0-9]/g, "");
-  if (cleanPhone.length === 10 && cleanPhone.startsWith("0")) {
-    cleanPhone = "225" + cleanPhone;
-  }
+  const cleanPhone = waNumber(inv.clientPhone);
 
   let msg = `*POULAILLER STE-MARIE — ${inv.type.toUpperCase()} N° ${inv.number}*\n`;
   msg += `📅 Date : ${inv.date}\n`;
@@ -6237,8 +6379,9 @@ function shareInvoiceWhatsApp(inv) {
   }
   msg += `Statut : ${(inv.status || "payee").toUpperCase()}\n\n`;
   msg += `_Merci pour votre confiance et bonne dégustation !_\n`;
-  msg += `*Monastère Bénédictin Sainte-Marie · Bouaké*\n`;
-  msg += `Tél : +225 07 48 12 34 56 · 01 BP 511 Bouaké 01`;
+  const st = state.settings || {};
+  msg += `*${st.orgName || "Monastère Bénédictin Sainte-Marie"} · Bouaké*\n`;
+  msg += `Tél : ${st.orgTel || ""} · ${st.orgAddress || ""}`;
 
   const url = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
   window.open(url, "_blank");
@@ -6805,8 +6948,7 @@ function renderContactsList() {
           </div>
         ` : contacts.map(c => {
           const initials = c.name.split(" ").map(w => w[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
-          const cleanPhone = (c.phone || "").replace(/[^0-9]/g, "");
-          const waPhone = cleanPhone.length === 10 && cleanPhone.startsWith("0") ? "225" + cleanPhone : cleanPhone;
+          const waPhone = waNumber(c.phone);
           return `
             <div class="contact-card">
               <div class="contact-header">
@@ -6822,7 +6964,7 @@ function renderContactsList() {
               <div class="contact-details">
                 ${c.phone ? `
                   <p>
-                    📞 <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>
+                    📞 <a href="${esc(telHref(c.phone))}">${esc(c.phone)}</a>
                   </p>
                 ` : ''}
                 ${c.address ? `
@@ -6843,7 +6985,7 @@ function renderContactsList() {
                   <a href="https://wa.me/${waPhone}" target="_blank" class="btn-wa">
                     💬 WhatsApp
                   </a>
-                  <a href="tel:${esc(c.phone)}" class="btn-call">
+                  <a href="${esc(telHref(c.phone))}" class="btn-call">
                     📞 Appeler
                   </a>
                 ` : ''}
@@ -7244,7 +7386,7 @@ function renderLanding() {
           </h3>
           <p style="margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.55">
             <b>Votre question légitime :</b> <i>« Si quelqu'un a le lien, peut-il voir mes chiffres ou les modifier ? »</i><br>
-            <b>La réponse technique :</b> <b>Non !</b> Grâce à l'architecture <i>Local-First</i>, chaque visiteur possède son propre espace de stockage étanche dans son navigateur. Les données saisies sur votre appareil ne sont jamais écrasées par un tiers. Pour une sécurité renforcée, vous pouvez activer un <b>code PIN de verrouillage</b> dans vos Paramètres.
+            <b>La réponse technique :</b> <b>Non !</b> Grâce à l'architecture <i>Local-First</i>, chaque visiteur possède son propre espace de stockage étanche dans son navigateur. Les données saisies sur votre appareil ne sont jamais écrasées par un tiers et ne quittent jamais votre téléphone. Pensez à télécharger régulièrement une <b>sauvegarde JSON</b> depuis les Paramètres.
           </p>
         </div>
       </section>
@@ -7285,7 +7427,7 @@ function renderLanding() {
 
           <div class="faq-card">
             <h4>🔒 Mes données risquent-elles d'être modifiées par autrui ?</h4>
-            <p>Non. Les données de votre exploitation sont stockées localement sur votre téléphone ou ordinateur. Vous pouvez également verrouiller l'accès avec un code PIN à 4 chiffres.</p>
+            <p>Non. Les données de votre exploitation sont stockées localement sur votre téléphone ou ordinateur : personne d'autre ne peut les voir ni les modifier. Utilisez la sauvegarde JSON des Paramètres pour les conserver.</p>
           </div>
         </div>
       </section>
@@ -7448,7 +7590,7 @@ function openFarmSwitcherModal() {
     </div>
 
     <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:space-between;align-items:center">
-      <button class="btn btn-ghost" data-action="goto" data-view="params">⚙️ Paramètres &amp; Code PIN</button>
+      <button class="btn btn-ghost" data-action="goto" data-view="params">⚙️ Paramètres &amp; Sauvegarde</button>
       <button class="btn btn-primary" data-action="close-modal">Fermer</button>
     </div>
   `;
@@ -7847,8 +7989,15 @@ function handleUpgradeActions(btn, act, e) {
       window.deferredPwaPrompt.prompt();
       window.deferredPwaPrompt.userChoice.then((choice) => {
         if (choice.outcome === 'accepted') {
+          try { localStorage.setItem("pwa-installed", "1"); } catch (e) {}
           toast("Merci ! L'application est installée sur votre appareil.");
+        } else {
+          try { localStorage.setItem("pwa-banner-dismissed", "1"); } catch (e) {}
         }
+        ["pwa-install-banner", "pwa-install-banner-settings"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = "none";
+        });
         window.deferredPwaPrompt = null;
       });
     } else {
@@ -7888,8 +8037,8 @@ function handleUpgradeActions(btn, act, e) {
         Vous gérez plusieurs sites avicoles, un couvoir ou une provenderie ? Notre équipe zootechnique et informatique vous accompagne avec un déploiement sur mesure.
       </p>
       <div style="background:#f6f8f6;border:1px solid #d8e5dc;border-radius:12px;padding:16px;margin:16px 0">
-        <p style="margin:0 0 8px 0;font-size:13px"><b>WhatsApp Direct :</b> <a href="https://wa.me/2250700000000?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20l%27offre%20Avicola%20SaaS%20Coop%C3%A9rative" target="_blank" style="color:var(--sage);font-weight:700">+225 07 00 00 00 00</a></p>
-        <p style="margin:0;font-size:13px"><b>Email Partenariats :</b> contact@avicolasaas.com</p>
+        <p style="margin:0 0 8px 0;font-size:13px"><b>WhatsApp Direct :</b> <a href="${esc(waLink(`Bonjour, je souhaite des informations sur l'offre Avicola SaaS Coopérative`))}" target="_blank" rel="noopener" style="color:var(--sage);font-weight:700">${esc(state.settings.orgTel || "Nous contacter")}</a></p>
+        <p style="margin:0;font-size:13px"><b>Support :</b> utilisez le bouton « WhatsApp 1-clic » depuis une fiche client pour joindre votre interlocuteur habituel.</p>
       </div>
       <div style="text-align:right">
         <button class="btn btn-primary" data-action="close-modal">Fermer</button>
@@ -9637,11 +9786,18 @@ document.addEventListener("click", (e) => {
     save(); toast("Paramètres enregistrés"); render();
   }
   if (act === "export") {
+    try {
+      localStorage.setItem("last-backup-at", new Date().toISOString());
+    } catch (e) {}
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `poulailler-${ui.month}.json`;
+    a.download = `poulailler-${todayStr()}.json`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    toast("Sauvegarde téléchargée — conservez-la sur clé USB ou par WhatsApp.");
   }
   if (act === "reset-seed") {
     if (confirm("Recharger l'exemple août 2026 ? Les saisies actuelles seront remplacées.")) {
@@ -9649,12 +9805,17 @@ document.addEventListener("click", (e) => {
     }
   }
   if (act === "wipe") {
-    if (confirm("Effacer toutes les données ?")) {
-      localStorage.removeItem(KEY);
+    if (confirm("Effacer toutes les données ?\n\nConseil : téléchargez d'abord une sauvegarde JSON (bouton « Exporter JSON »).\n\nL'identité de l'élevage et vos tarifs seront conservés.")) {
+      const keepSettings = JSON.parse(JSON.stringify(state.settings || {}));
+      const keepEntities = JSON.parse(JSON.stringify(state.entities || []));
+      try { localStorage.removeItem(KEY); } catch (e) {}
       state = seed();
+      state.settings = { ...state.settings, ...keepSettings };
+      if (keepEntities.length) state.entities = keepEntities;
       state.eggs = {}; state.sales = []; state.credits = []; state.feed = [];
       state.vet = []; state.flockEvents = []; state.monthNotes = {};
       save(); render();
+      toast("Données effacées — identité et tarifs conservés.");
     }
   }
 });
@@ -9820,15 +9981,41 @@ document.addEventListener("click", (e) => {
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   window.deferredPwaPrompt = e;
-  const pwaBanner = document.getElementById("pwa-install-banner");
-  if (pwaBanner) pwaBanner.style.display = "flex";
+  let alreadyHandled = false;
+  try {
+    alreadyHandled = localStorage.getItem("pwa-installed") === "1" || localStorage.getItem("pwa-banner-dismissed") === "1";
+  } catch (err) {}
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if (!alreadyHandled && !standalone) {
+    ["pwa-install-banner", "pwa-install-banner-settings"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "flex";
+    });
+  }
   const pwaBtns = document.querySelectorAll('[data-action="pwa-install-prompt"]');
   pwaBtns.forEach(btn => btn.style.display = "inline-flex");
 });
 
 if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker.register("./sw.js").then((reg) => {
+      // Quand une nouvelle version du service worker est trouvée, on recharge une seule fois
+      // pour que l'utilisateur voie immédiatement la dernière version de l'application.
+      reg.addEventListener("updatefound", () => {
+        const fresh = reg.installing;
+        if (!fresh) return;
+        fresh.addEventListener("statechange", () => {
+          if (fresh.state === "installed" && navigator.serviceWorker.controller && !sessionStorage.getItem("swReloaded")) {
+            sessionStorage.setItem("swReloaded", "1");
+            window.location.reload();
+          }
+        });
+      });
+      // Vérifie les mises à jour à chaque retour sur l'application.
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") reg.update().catch(() => {});
+      });
+    }).catch(() => {});
   });
 }
 
@@ -9871,8 +10058,15 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("DOMContentLoaded", () => {
   initVoiceAgentDrag();
-  document.getElementById("brand-mark").innerHTML = henSvg();
-  setView("dashboard");
+  const brandMark = document.getElementById("brand-mark");
+  if (brandMark) brandMark.innerHTML = henSvg();
+  const initialView = viewFromHash();
+  setView(initialView || "dashboard");
+  // Navigation arrière / avant du navigateur.
+  window.addEventListener("hashchange", () => {
+    const v = viewFromHash();
+    if (v && v !== ui.view) setView(v);
+  });
 });
 
   </script>

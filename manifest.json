@@ -1,24 +1,40 @@
 {
+  "id": "/",
   "name": "Poulailler Sainte-Marie · Gestion Avicole & Cheptel",
   "short_name": "Poulailler Ste-Marie",
-  "description": "Application complète de gestion d'élevage de ponte, suivi de cheptel, stock d'œufs et facturation",
-  "start_url": "./Poulailler-Ste-Marie.html",
+  "description": "Application complète de gestion d'élevage de ponte : suivi de cheptel, stock d'œufs, caisse et facturation — 100% hors-ligne.",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "any",
   "background_color": "#f6f3ed",
   "theme_color": "#1e5631",
+  "dir": "ltr",
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "categories": ["business", "productivity", "utilities"],
