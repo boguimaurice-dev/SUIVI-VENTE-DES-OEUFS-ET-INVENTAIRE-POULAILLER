@@ -2,12 +2,90 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "routes": [
-    { "src": "/Poulailler-Ste-Marie.html", "dest": "/index.html" },
-    { "src": "/poulailler", "dest": "/index.html" },
-    { "src": "/sw.js", "headers": { "cache-control": "public, max-age=0, must-revalidate", "Service-Worker-Allowed": "/" }, "dest": "/sw.js" },
-    { "src": "/manifest.json", "headers": { "cache-control": "public, max-age=3600" }, "dest": "/manifest.json" },
-    { "src": "/(.*)", "dest": "/$1" },
-    { "src": "/", "dest": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/poulailler",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/poulailler/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/Poulailler-Ste-Marie.html",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/Poulailler-Ste-Marie",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/icon-(.*).png",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    }
   ]
 }
