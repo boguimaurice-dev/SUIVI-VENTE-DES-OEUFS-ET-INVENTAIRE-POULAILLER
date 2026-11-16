@@ -3282,7 +3282,10 @@ function renderDashboard() {
         <h4>📱 Installer l'application sur votre écran d'accueil</h4>
         <p>Accès direct 1-clic, affichage plein écran et fonctionnement 100% hors-ligne garanti.</p>
       </div>
-      <button class="pwa-install-btn" data-action="pwa-install-prompt">Installer l'App</button>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="pwa-install-btn" data-action="pwa-install-prompt">Installer l'App</button>
+        <button class="btn btn-ghost" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.4);padding:8px 12px" data-action="pwa-dismiss-banner">Plus tard</button>
+      </div>
     </div>
 
     <div class="btn-row" style="margin-bottom:16px;flex-wrap:wrap">
@@ -6668,7 +6671,7 @@ function renderInvoiceForm() {
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px">
             <span>Montant Réglé :</span>
-            <input type="number" id="inv-paid" class="form-input" value="${inv ? inv.paidAmount : 110000}" style="width:110px;text-align:right;padding:3px">
+            <input type="number" id="inv-paid" class="form-input" value="${inv ? inv.paidAmount : 0}" style="width:110px;text-align:right;padding:3px">
           </div>
           <div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px">
             <span style="font-weight:600">Reste Dû :</span>
@@ -7984,6 +7987,16 @@ function handleUpgradeActions(btn, act, e) {
   }
 
   // --- PWA INSTALLATION PROMPT ---
+  if (act === "pwa-dismiss-banner") {
+    try { localStorage.setItem("pwa-banner-dismissed", "1"); } catch (e) {}
+    ["pwa-install-banner", "pwa-install-banner-settings"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
+    });
+    toast("Bandeau masqué — installation possible à tout moment dans Paramètres.");
+    return true;
+  }
+
   if (act === "pwa-install-prompt") {
     if (window.deferredPwaPrompt) {
       window.deferredPwaPrompt.prompt();
@@ -8113,6 +8126,16 @@ function attachInvoiceLiveEvents() {
   if (table) table.addEventListener("input", recalcInvoiceForm);
   const paidInput = document.getElementById("inv-paid");
   if (paidInput) paidInput.addEventListener("input", recalcInvoiceForm);
+  // Paiement « À Crédit » : on remet le montant réglé à 0 pour éviter une facture faussement soldée.
+  const paySelect = document.getElementById("inv-pay-method");
+  if (paySelect) {
+    paySelect.addEventListener("change", () => {
+      if (paySelect.value === "credit" && paidInput && num(paidInput.value) > 0) {
+        paidInput.value = 0;
+        recalcInvoiceForm();
+      }
+    });
+  }
 }
 
 // Contact Modal
